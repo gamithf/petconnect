@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { SideBar } from "./components/common/SideBar";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
@@ -14,6 +14,29 @@ import LandingPage from "./pages/common/LandingPage";
 import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
 
+// Layout wrapper to handle conditional styling
+const AppLayout = () => {
+  const location = useLocation();
+  const isVetPage = location.pathname === "/vet-services";
+
+  return (
+    <ProtectedRoute>
+      <div className="flex">
+        <SideBar />
+        <div className={isVetPage ? "flex-1" : "flex-1 p-6"}>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/pet-adoption" element={<PetAdoptionLost />} />
+            <Route path="/ai-services" element={<AI />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/vet-services" element={<VetService />} />
+          </Routes>
+        </div>
+      </div>
+    </ProtectedRoute>
+  );
+};
+
 function App() {
   return (
     <Router>
@@ -23,26 +46,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <div className="flex">
-                <SideBar />
-                <div className="flex-1 p-6">
-                  <Routes>
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/pet-adoption" element={<PetAdoptionLost />} />
-                    <Route path="/ai-services" element={<AI />} />
-                    <Route path="/community" element={<Community />} />
-                    <Route path="/vet-services" element={<VetService />} />
-                  </Routes>
-                </div>
-              </div>
-            </ProtectedRoute>
-          }
-        />
+        {/* Protected Layout with conditional class */}
+        <Route path="/*" element={<AppLayout />} />
       </Routes>
     </Router>
   );
