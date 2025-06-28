@@ -1,12 +1,16 @@
 import NavBar from '../../components/vetService/NavBar';
+import Services1 from '../../components/vetService/Services';
 
 
 export default function VetService() {
   return (
     <div className="bg-[#3AAFA9] h-screen px-8 py-6">
       <NavBar />
+      <Services1 />
 
-      <h2 className="text-xl font-semibold text-white">Vet Services</h2>
+      {/* <button className="">
+        Find a Vet
+      </button> */}
     </div>
   );
 }

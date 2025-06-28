@@ -47,7 +47,7 @@ const Sidebar = () => {
 
     fetchUser();
   }, []);
- 
+
   useEffect(() => {
     const path = location.pathname;
     const match = mainLinks.concat(footerLinks).find((link) =>
@@ -129,9 +129,8 @@ const Option = ({ Icon, title, selected, setSelected, open, path }) => (
     <motion.button
       layout
       onClick={() => setSelected(title)}
-      className={`flex items-center w-full h-10 rounded-md px-2 transition-colors ${
-        selected === title ? "bg-slate-700" : "hover:bg-slate-600"
-      }`}
+      className={`flex items-center w-full h-10 rounded-md px-2 transition-colors ${selected === title ? "bg-slate-700" : "hover:bg-slate-600"
+        }`}
     >
       <div className="w-6 mr-3 text-lg">
         <Icon />
