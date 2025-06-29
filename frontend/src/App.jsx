@@ -13,11 +13,12 @@ import VetService from "./pages/vet-services/VetService";
 import LandingPage from "./pages/common/LandingPage";
 import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
+import Clinics from "./pages/vet-services/Clinics";
 
 // Layout wrapper to handle conditional styling
 const AppLayout = () => {
   const location = useLocation();
-  const isVetPage = location.pathname === "/vet-services";
+  const isVetPage = location.pathname === "/vet-services" === true || location.pathname === "/clinics";
 
   return (
     <ProtectedRoute>
@@ -30,6 +31,8 @@ const AppLayout = () => {
             <Route path="/ai-services" element={<AI />} />
             <Route path="/community" element={<Community />} />
             <Route path="/vet-services" element={<VetService />} />
+            <Route path="/clinics" element={<Clinics />} />
+
           </Routes>
         </div>
       </div>

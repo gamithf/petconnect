@@ -23,28 +23,45 @@ const Services = () => {
   ];
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-5 mt-10">Vet Services</h1>
-      <div className="grid md:grid-cols-3 gap-4">
+    <div className="">
+      <h1 className="text-3xl font-extrabold text-[#17252A] mb-12 ">
+        Vet Services
+      </h1>
+
+      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {services.map((service, index) => (
           <div
             key={index}
-            className="rounded-lg overflow-hidden text-center"
+            className="relative overflow-hidden rounded-2xl shadow-xl group transform transition duration-300 hover:scale-105"
           >
-            <img src={service.image} alt={service.title} className="w-full  object-cover rounded-lg" />
-            <div className="p-6">
-              <h2 className="text-xl font-bold mb-2">{service.title}</h2>
-              <p className="text-sm text-gray-600 mb-4">{service.description}</p>
+            <img
+              src={service.image}
+              alt={service.title}
+              className="w-full h-80 object-cover"
 
+            />
+
+            {/* Title bar */}
+            <div className="absolute top-0 left-0 w-full bg-gradient-to-r from-[#17252A]/90 to-white/10 px-4 py-2 z-20">
+              <h2 className="text-white text-xl font-semibold">{service.title}</h2>
+            </div>
+
+            {/* Hover overlay */}
+            <div className="absolute inset-0 flex justify-center items-center bg-black/70 backdrop-blur-sm text-white px-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+              <div className="flex flex-col items-center gap-4">
+                <p className="text-base">{service.description}</p>
+                <button className="bg-white text-[#17252A] font-medium px-4 py-2 rounded-md hover:bg-gray-200 transition">
+                  Learn More
+                </button>
+              </div>
             </div>
           </div>
         ))}
       </div>
-      <button className="block mx-auto bg-[#17252A] text-[#feffff] px-5 py-3 rounded-2xl items-center gap-2 text-l font-medium hover:opacity-90 transition mt-0">
+
+      <button className="mt-14 block mx-auto bg-[#17252A] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#1c3b40] transition shadow-md hover:shadow-lg">
         Find a Vet
       </button>
-
-
     </div>
   );
 };
