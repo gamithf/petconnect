@@ -7,10 +7,6 @@ export default function VetService() {
     <div className="bg-[#3AAFA9] min-h-screen px-8 py-6">
       <NavBar />
       <Services1 />
-
-      {/* <button className="">
-        Find a Vet
-      </button> */}
     </div>
   );
 }

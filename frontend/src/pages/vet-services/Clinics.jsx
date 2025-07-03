@@ -3,8 +3,9 @@ import NavBar from '../../components/vetService/NavBar'
 import clinic1 from '../../assets/clinic1.png'
 import clinic2 from '../../assets/clinic2.png'
 import clinic3 from '../../assets/clinic3.png'
+import { useNavigate } from 'react-router-dom'
 
-const clinicsData = [
+export const clinicsData = [
     {
         name: 'Happy Paws Clinic',
         description: 'Providing quality care for your furry friends.',
@@ -55,6 +56,7 @@ const Clinics = () => {
     const [page, setPage] = useState(1)
     const clinicsPerPage = 4
     const totalPages = 5
+    const navigate = useNavigate();
 
     // Filtered and paginated clinics
     const filteredClinics = clinicsData.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
@@ -103,7 +105,10 @@ const Clinics = () => {
                                         <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" /></svg>
                                         Book Now
                                     </button>
-                                    <button className="text-xs border-1 rounded-2xl text-[#3AAFA9] px-5 py-2 font-semibold  hover:bg-[#3AAFA9] hover:text-white transition-all duration-200">
+                                    <button
+                                        className="text-xs border-1 rounded-2xl text-[#3AAFA9] px-5 py-2 font-semibold  hover:bg-[#3AAFA9] hover:text-white transition-all duration-200"
+                                        onClick={() => navigate(`/clinics/${(page - 1) * clinicsPerPage + idx}`)}
+                                    >
                                         More Info
                                     </button>
                                 </div>
