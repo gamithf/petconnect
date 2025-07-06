@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../../components/common/Button";
 import heroImg from "../../assets/heroImg.svg"; // Replace with your hero image
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const features = [
   "Pet adoption & lost/found support",
@@ -16,26 +16,24 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-[#3AAFA9] text-white">
       {/* Top Nav with Logo */}
-      {/* <header className="p-6">
-        <h1 className="text-xl font-bold text-[#feffff]">PetConnect</h1>
-        <button className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
-          Login
-        </button>
-        <button className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
-          Register
-        </button>
-      </header> */}
+
       <header className="flex justify-between items-center px-6 py-4">
         <div className="flex items-center space-x-2">
           <h1 className="text-xl font-bold text-gray-800">PetConnect</h1>
         </div>
         <div className="flex space-x-3">
-          <button className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+          <Link
+            to="/login"
+            className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+          >
             Login
-          </button>
-          <button className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+          </Link>
+          <Link
+            to="/register"
+            className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+          >
             Register
-          </button>
+          </Link>
         </div>
       </header>
 

@@ -1,59 +1,62 @@
+/* eslint-disable no-unused-vars */
 import { FiUser, FiLock, FiArrowRight } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import loginbg from "../../assets/loginBg.jpg";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 import { authRequest } from "../../api/api";
 import React, { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setIsLoading(true);
-    
+
     try {
       const payload = { email, password };
       const response = await authRequest("/users/login", "POST", payload);
       const data = response.data;
-      
-      if (data.status === 'success') navigate("/home");
+
+      if (data.status === "success") navigate("/home");
       else {
-        setError(response.data?.message || 'Login failed. Please try again.');
+        setError(response.data?.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred during login.');
-      console.error('Login error:', err);
+      setError(
+        err.response?.data?.message || "An error occurred during login."
+      );
+      console.error("Login error:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleGoogleSignIn = async () => {
-   const popup = window.open(
-      'http://localhost:3000/auth/google',
-      '_blank',
-      'width=500,height=600'
+    const popup = window.open(
+      "http://localhost:3000/auth/google",
+      "_blank",
+      "width=500,height=600"
     );
-    
-    window.addEventListener('message', (event) => {
-      if (event.origin === 'http://localhost:3000') {
+
+    window.addEventListener("message", (event) => {
+      if (event.origin === "http://localhost:3000") {
         const { data } = event.data;
         // Handle user data and token
-        console.log('Google auth success:', data);
+        console.log("Google auth success:", data);
         if (data && data.token) {
           // Store token in local storage or state management
-          localStorage.setItem('auth_token', data.token);
+          localStorage.setItem("auth_token", data.token);
           // Redirect to home page
-          navigate('/home');
+          navigate("/home");
         } else {
-          setError('Google authentication failed. Please try again.');
+          setError("Google authentication failed. Please try again.");
         }
       }
     });
@@ -62,23 +65,25 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#3AAFA9] p-4">
       {/* Card with background image */}
-      <div 
+      <div
         className="w-full max-w-md rounded-lg shadow-md overflow-hidden relative"
         style={{
           backgroundImage: `url(${loginbg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat"
+          backgroundRepeat: "no-repeat",
         }}
       >
         {/* Semi-transparent overlay - lighter for dark text */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-white/30"></div>
-        
+
         {/* Content with dark text */}
         <div className="relative z-10 p-8 text-gray-800">
           {/* Logo Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mt-24">Welcome Back Pet Lover !</h1>
+            <h1 className="text-3xl font-bold mt-24">
+              Welcome Back Pet Lover !
+            </h1>
           </div>
 
           {error && (
@@ -126,13 +131,19 @@ const Login = () => {
                   type="checkbox"
                   className="h-4 w-4 text-[#3AAFA9] focus:ring-[#3AAFA9] border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-800">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-800"
+                >
                   Remember me
                 </label>
               </div>
 
               <div className="text-sm">
-                <a href="#" className="font-medium text-gray-800 hover:text-[#2E8B84]">
+                <a
+                  href="#"
+                  className="font-medium text-gray-800 hover:text-[#2E8B84]"
+                >
                   Forgot password?
                 </a>
               </div>
@@ -143,7 +154,8 @@ const Login = () => {
               disabled={isLoading}
               className="w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#3AAFA9] hover:bg-[#2E8B84] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3AAFA9] disabled:opacity-70"
             >
-              {isLoading ? 'Logging in...' : 'Log in'} <FiArrowRight className="ml-2" />
+              {isLoading ? "Logging in..." : "Log in"}{" "}
+              <FiArrowRight className="ml-2" />
             </button>
 
             {/* Divider with "or" text */}
@@ -169,9 +181,12 @@ const Login = () => {
 
           <div className="mt-6 text-center text-sm text-gray-600">
             Don't have an account?{" "}
-            <a href="/register" className="font-medium text-[#3AAFA9] hover:text-[#2E8B84]">
+            <Link
+              to="/register"
+              className="font-medium text-[#3AAFA9] hover:text-[#2E8B84]"
+            >
               Sign up
-            </a>
+            </Link>
           </div>
         </div>
       </div>
