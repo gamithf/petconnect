@@ -34,14 +34,14 @@ const Sidebar = () => {
         const response = await apiRequest("/users/profile", "GET");
         const data = response.data;
         console.log(data);
-        if (data.status === 'success') {
+        if (data.status === "success") {
           console.log(data.data);
           setUser(data.data);
         } else {
-          console.error('Failed to fetch user profile:', data.message);
+          console.error("Failed to fetch user profile:", data.message);
         }
       } catch (error) {
-        console.error('Failed to fetch user:', error);
+        console.error("Failed to fetch user:", error);
       }
     };
 
@@ -50,9 +50,9 @@ const Sidebar = () => {
 
   useEffect(() => {
     const path = location.pathname;
-    const match = mainLinks.concat(footerLinks).find((link) =>
-      path.includes(link.path)
-    );
+    const match = mainLinks
+      .concat(footerLinks)
+      .find((link) => path.includes(link.path));
     setSelected(match?.title || "Home");
   }, [location.pathname]);
 
@@ -95,12 +95,13 @@ const Sidebar = () => {
         ))}
         {open && (
           <div className="text-sm text-slate-300 px-3 mt-4">
-            {open && user?.name && (  // Only render if user.name exists
-              <div className="text-sm text-slate-300 px-3 mt-4">
-                <div className="font-semibold">{user.name}</div>
-                <div className="text-xs text-slate-400">Pet Lover</div>
-              </div>
-            )}
+            {open &&
+              user?.name && ( // Only render if user.name exists
+                <div className="text-sm text-slate-300 px-3 mt-4">
+                  <div className="font-semibold">{user.name}</div>
+                  <div className="text-xs text-slate-400">Pet Lover</div>
+                </div>
+              )}
           </div>
         )}
       </div>
@@ -129,8 +130,9 @@ const Option = ({ Icon, title, selected, setSelected, open, path }) => (
     <motion.button
       layout
       onClick={() => setSelected(title)}
-      className={`flex items-center w-full h-10 rounded-md px-2 transition-colors ${selected === title ? "bg-slate-700" : "hover:bg-slate-600"
-        }`}
+      className={`flex items-center w-full h-10 rounded-md px-2 transition-colors ${
+        selected === title ? "bg-slate-700" : "hover:bg-slate-600"
+      }`}
     >
       <div className="w-6 mr-3 text-lg">
         <Icon />
