@@ -16,7 +16,10 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-[#3AAFA9] text-white">
       {/* Top Nav with Logo */}
-      <header className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center bg-teal-500">
+      <header
+        className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center 
+  bg-teal-500/30 backdrop-blur-md border-b border-white/10 shadow-md rounded-xl"
+      >
         <h1 className="text-xl font-bold text-white mb-4 sm:mb-0">
           PetConnect
         </h1>

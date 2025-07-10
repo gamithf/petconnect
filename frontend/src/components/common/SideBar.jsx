@@ -113,7 +113,7 @@ const Sidebar = () => {
 
 // === Define routes directly with path ===
 const mainLinks = [
-  { title: "Home", icon: FiHome, path: "/" },
+  { title: "Home", icon: FiHome, path: "/home" },
   { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
   { title: "AI Services", icon: FiCpu, path: "/ai-services" },
   { title: "Community", icon: FiUsers, path: "/community" },
