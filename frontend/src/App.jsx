@@ -30,7 +30,7 @@ function App() {
             <ProtectedRoute>
               <div className="flex">
                 <SideBar />
-                <div className="flex-1 p-6">
+                <div className="flex-1 ">
                   <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route path="/pet-adoption" element={<PetAdoptionLost />} />
