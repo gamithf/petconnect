@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { motion } from 'framer-motion'
 import NavBar from '../../components/vetService/NavBar'
 import clinic1 from '../../assets/clinic1.png'
 import clinic2 from '../../assets/clinic2.png'
@@ -66,7 +67,12 @@ const Clinics = () => {
     const clinicsToShow = filteredClinics.slice((page - 1) * clinicsPerPage, page * clinicsPerPage)
 
     return (
-        <div className="min-h-screen px-8 py-6 bg-gradient-to-br from-[#3AAFA9] via-[#2B7A78] to-[#17252A]">
+        <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="min-h-screen px-8 py-6 bg-gradient-to-br from-[#3AAFA9] via-[#2B7A78] to-[#17252A]"
+        >
             <NavBar />
             <div className="max-w-7xl mx-auto mt-4">
                 <h1 className="text-4xl font-bold tracking-wide text-[#17252A] mb-8 drop-shadow-lg">Vet Clinics Near You</h1>
@@ -90,8 +96,11 @@ const Clinics = () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {clinicsToShow.map((clinic, idx) => (
-                        <div
+                        <motion.div
                             key={idx}
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.1 + 0.2, duration: 0.5 }}
                             className="flex h-40 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/40 group"
                         >
                             <img src={clinic.image} alt={clinic.name} className="w-40 h-full object-cover rounded-l-3xl" />
@@ -122,7 +131,7 @@ const Clinics = () => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
                 {/* Pagination */}
@@ -149,7 +158,7 @@ const Clinics = () => {
                 clinic={selectedClinic}
                 onClose={() => setShowModal(false)}
             />
-        </div>
+        </motion.div>
     )
 }
 
