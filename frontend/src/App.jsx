@@ -13,6 +13,8 @@ import VetService from "./pages/vet-services/VetService";
 import LandingPage from "./pages/common/LandingPage";
 import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
+import Clinics from "./pages/vet-services/Clinics";
+import ClinicsInfo from "./pages/vet-services/ClinicsInfo";
 
 function App() {
   return (
@@ -37,6 +39,8 @@ function App() {
                     <Route path="/ai-services" element={<AI />} />
                     <Route path="/community" element={<Community />} />
                     <Route path="/vet-services" element={<VetService />} />
+                    <Route path="/clinics" element={<Clinics />} />
+                    <Route path="/clinics/:clinicId" element={<ClinicsInfo />} />
                   </Routes>
                 </div>
               </div>
