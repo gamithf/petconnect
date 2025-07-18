@@ -4,6 +4,7 @@ import clinic1 from '../../assets/clinic1.png'
 import clinic2 from '../../assets/clinic2.png'
 import clinic3 from '../../assets/clinic3.png'
 import { useNavigate } from 'react-router-dom'
+import AppointmentModal from '../../components/vetService/AppointmentModal'
 
 export const clinicsData = [
     {
@@ -57,6 +58,8 @@ const Clinics = () => {
     const clinicsPerPage = 4
     const totalPages = 5
     const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false)
+    const [selectedClinic, setSelectedClinic] = useState(null)
 
     // Filtered and paginated clinics
     const filteredClinics = clinicsData.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
@@ -101,7 +104,13 @@ const Clinics = () => {
                                     <p className="text-gray-700 text-sm mb-3 font-light">{clinic.description}</p>
                                 </div>
                                 <div className="flex gap-3 mt-4">
-                                    <button className="text-xs flex items-center gap-2 bg-gradient-to-r bg-[#17252A] text-white px-5 py-2 rounded-2xl font-semibold shadow transition-all duration-200">
+                                    <button
+                                        className="text-xs flex items-center gap-2 bg-gradient-to-r bg-[#17252A] text-white px-5 py-2 rounded-2xl font-semibold shadow transition-all duration-200"
+                                        onClick={() => {
+                                            setSelectedClinic(clinic)
+                                            setShowModal(true)
+                                        }}
+                                    >
                                         <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 5v14m7-7H5" /></svg>
                                         Book Now
                                     </button>
@@ -135,6 +144,11 @@ const Clinics = () => {
                     </button>
                 </div>
             </div>
+            <AppointmentModal
+                isOpen={showModal}
+                clinic={selectedClinic}
+                onClose={() => setShowModal(false)}
+            />
         </div>
     )
 }

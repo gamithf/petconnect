@@ -2,8 +2,10 @@ import React from 'react';
 import checkupImg from '../../assets/vetService1.png';
 import vaccinationImg from '../../assets/vetService2.png';
 import groomingImg from '../../assets/vetService3.png';
+import { useNavigate } from 'react-router-dom';
 
 const Services = () => {
+  const navigate = useNavigate();
   const services = [
     {
       title: 'Checkups',
@@ -59,7 +61,9 @@ const Services = () => {
         ))}
       </div>
 
-      <button className="mt-14 block mx-auto bg-[#17252A] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#1c3b40] transition shadow-md hover:shadow-lg">
+      <button className="mt-14 block mx-auto bg-[#17252A] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#1c3b40] transition shadow-md hover:shadow-lg"
+        onClick={() => navigate('/clinics')}
+      >
         Find a Vet
       </button>
     </div>
