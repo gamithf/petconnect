@@ -1,80 +1,90 @@
-import React from "react";
-import Button from "../../components/common/Button";
-import heroImg from "../../assets/heroImg.svg"; // Replace with your hero image
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const features = [
-  "Pet adoption & lost/found support",
-  "AI-powered pet care & advice",
-  "Community Q&A and tips",
-  "Vet booking and emergency services",
-];
-
-export default function Landing() {
+function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[#3AAFA9] text-white">
-      {/* Top Nav with Logo */}
-      <header
-        className="p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center 
-  bg-teal-500/30 backdrop-blur-md border-b border-white/10 shadow-md rounded-xl"
-      >
-        <h1 className="text-xl font-bold text-white mb-4 sm:mb-0">
-          PetConnect
-        </h1>
-
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-center">
-          <button
-            className="bg-[#17252A] text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm cursor-pointer w-24 sm:w-24"
-            onClick={() => navigate("/login")}
+    <div className="min-h-screen bg-[#3AAFA9] text-[#feffff]">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center p-4">
+        <div className="text-2xl font-bold">
+          {/* Replace with your logo */}
+          <span className="text-[#17252A]">Pet</span>Connect
+        </div>
+        <div>
+          <button 
+            className="bg-[#17252A] text-[#feffff] px-4 py-2 rounded mr-2 hover:opacity-90 transition"
+            onClick={() => navigate('/login')}
           >
             Login
           </button>
-          <button
-            onClick={() => navigate("/register")}
-            className="bg-[#17252A] text-white px-4 py-2 rounded-md hover:opacity-90 transition text-sm cursor-pointer w-24 sm:w-24"
+          <button 
+            className="bg-[#17252A] text-[#feffff] px-4 py-2 rounded hover:opacity-90 transition"
+            onClick={() => navigate('/register')}
           >
             Register
           </button>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
-      <section className="flex flex-col md:flex-row items-center justify-between px-6 md:px-20 py-10 gap-10">
-        <div className="md:w-1/2">
-          <img
-            src={heroImg}
-            alt="Pet Hero"
-            className="rounded-md shadow-lg w-full"
-          />
-        </div>
-        <div className="md:w-1/2 text-left">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Connect Better With Your Pet
-          </h2>
-          <p className="mb-6 text-lg text-[#feffff] max-w-md">
-            AI meets pet care. Track, manage, and enjoy everything about your
-            furry friends in one app.
+      <header className="container mx-auto flex flex-col md:flex-row items-center justify-center py-16 px-4">
+        <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
+          <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-4">
+            Connect Better With Your <span className="text-[#17252A]">Pet</span>
+          </h1>
+          <p className="text-lg md:text-xl mb-8">
+            PetConnect is your all-in-one, AI-powered platform designed for pet owners to easily manage their pets' care.
           </p>
-          <Button text="Get Started" onClick={() => navigate("/login")} />
+          <button 
+            className="bg-[#17252A] text-[#feffff] px-6 py-3 rounded-full text-lg font-semibold hover:opacity-90 transition"
+            onClick={() => navigate('/register')}
+          >
+            Get Started
+          </button>
+        </div>
+        <div className="md:w-1/2">
+          {/* Placeholder for hero image */}
+          <div className="w-full h-64 md:h-80 bg-[#2B7A78] rounded-lg flex items-center justify-center">
+            <span className="text-[#feffff] text-2xl">Hero Image Placeholder</span>
+          </div>
+        </div>
+      </header>
+
+      {/* Features Section */}
+      <section className="bg-[#2B7A78] py-16 px-4">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12">Key Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
+              <h3 className="text-xl font-semibold mb-4">Pet Adoption & Lost/Found</h3>
+              <p>Verified listings with geo-location for easy pet adoption and finding lost pets.</p>
+            </div>
+            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
+              <h3 className="text-xl font-semibold mb-4">AI-Powered Pet Care</h3>
+              <p>Health diagnostics through image/video analysis and personalized care advice.</p>
+            </div>
+            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
+              <h3 className="text-xl font-semibold mb-4">Service Booking</h3>
+              <p>Seamless booking system for grooming, training, and veterinary appointments.</p>
+            </div>
+            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
+              <h3 className="text-xl font-semibold mb-4">Community Forum</h3>
+              <p>Engage with other pet owners, get breed-specific advice, and find donation opportunities.</p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="bg-[#2C8F8B] px-6 md:px-20 py-12">
-        <h3 className="text-2xl font-semibold mb-6">What You Can Do</h3>
-        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {features.map((feat, index) => (
-            <li
-              key={index}
-              className="bg-[#174E4A] p-4 rounded-md shadow text-[#feffff] font-medium"
-            >
-              ✅ {feat}
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* Footer */}
+      <footer className="bg-[#17252A] text-[#feffff] py-8">
+        <div className="container mx-auto text-center">
+          <p>&copy; 2023 PetConnect. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 }
+
+export default Landing;

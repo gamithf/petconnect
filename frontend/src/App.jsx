@@ -15,6 +15,8 @@ import Login from "./pages/common/Login";
 import Register from "./pages/common/Register";
 import Clinics from "./pages/vet-services/Clinics";
 import ClinicsInfo from "./pages/vet-services/ClinicsInfo";
+import ChatWidget from "./components/ai-services/ChatWidget";
+import PetForm from "./pages/ai-service/PetForm";
 
 function App() {
   return (
@@ -32,7 +34,7 @@ function App() {
             <ProtectedRoute>
               <div className="flex">
                 <SideBar />
-                <div className="flex-1 ">
+                <div className="flex-1 relative">
                   <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route path="/pet-adoption" element={<PetAdoptionLost />} />
@@ -41,7 +43,9 @@ function App() {
                     <Route path="/vet-services" element={<VetService />} />
                     <Route path="/clinics" element={<Clinics />} />
                     <Route path="/clinics/:clinicId" element={<ClinicsInfo />} />
+                    <Route path="/pet-form" element={<PetForm />} />
                   </Routes>
+                  <ChatWidget />
                 </div>
               </div>
             </ProtectedRoute>
