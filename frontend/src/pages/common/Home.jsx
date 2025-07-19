@@ -46,27 +46,6 @@ export default function Home() {
             </div> */}
         </div>
       </section>
-
-      {/* Features Overview Section (Optional - can keep or remove) */}
-       {/* <section className="bg-[#2B7A78] py-16 px-4 w-full">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-12">Why Choose PetConnect?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
-              <h3 className="text-xl font-semibold mb-4">Comprehensive Care</h3>
-              <p>Manage health records, appointments, and daily routines effortlessly.</p>
-            </div>
-            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
-              <h3 className="text-xl font-semibold mb-4">Community & Support</h3>
-              <p>Connect with other pet lovers, share tips, and find local resources.</p>
-            </div>
-            <div className="bg-[#3AAFA9] p-6 rounded-lg shadow-lg text-[#17252A]">
-              <h3 className="text-xl font-semibold mb-4">Smart Assistance</h3>
-              <p>Utilize AI for health insights and personalized recommendations.</p>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 }
