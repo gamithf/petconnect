@@ -1,100 +1,102 @@
-import React from "react";
-import { FaCamera, FaVideo, FaShareAlt } from "react-icons/fa";
-import pawliImage from '../../assets/ai-services/chat-icon.png';
-import dogImage from '../../assets/ai-services/dog.png';
-import catImage from '../../assets/ai-services/cat.jpeg';
+import React, { useState } from 'react';
+import PetSelector from "../../components/ai-services/PetSelector";
+import PredictionForm from '../../components/ai-services/PredictionForm';
+import LoadingIndicator from '../../components/ai-services/LoadingIndicator';
+import ChatHistory from '../../components/ai-services/ChatHistory';
 
 export default function AI() {
-  const chatHistoryItems = [
-    "Image Upload – Tick Infection",
-    "Video Upload – Limping Analysis",
-    "Behavioral Issue – Sudden Aggression",
-    "Illness Recognition – Vomiting and Lethargy",
-    "Image Upload – Skin Rash",
-    "Behaviour Tracking – Drinking Too Much Water",
-    "Image Upload – Eye Discharge",
-    "Poop Check – Upload Image",
-    "Video Upload – Breathing Trouble",
-    "Behavioral Issue – Eating Litter",
-    "Video Upload Injury Detection – Limping After Walk",
-    "Video Upload – Excessive Itching While Bathing",
-  ];
+  const [selectedPet, setSelectedPet] = useState('');
+  const [method, setMethod] = useState('');
+  const [inputData, setInputData] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([]);
+
+  const handlePredict = async () => {
+    if (!selectedPet || !method || !inputData) return;
+
+    setLoading(true);
+
+    try {
+      let response;
+      let resultText = "";
+
+      if (method === "symptoms") {
+        const symptoms = inputData.split(",").map(s => s.trim());
+        const payload = {
+          AnimalName: selectedPet,
+          symptoms1: symptoms[0] || "",
+          symptoms2: symptoms[1] || "",
+          symptoms3: symptoms[2] || "",
+          symptoms4: symptoms[3] || "",
+          symptoms5: symptoms[4] || ""
+        };
+
+        response = await fetch("http://localhost:5000/predict-disease-with-symptoms", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          resultText = `Pawli thinks your ${selectedPet} may have ${result.message}`;
+        } else {
+          resultText = result.error || "Something went wrong with symptom prediction.";
+        }
+      } else if (method === "image") {
+        const formData = new FormData();
+        formData.append("file", inputData);
+
+        response = await fetch("http://localhost:5000/predict-disease-with-image", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          resultText = `Pawli thinks your ${selectedPet} may have ${result.prediction} (Confidence: ${result.confidence * 100}%)`;
+        } else {
+          resultText = result.error || "Something went wrong with image prediction.";
+        }
+      }
+
+      setHistory([{ input: inputData, response: resultText, pet: selectedPet, method }, ...history]);
+    } catch (error) {
+      setHistory([{ input: inputData, response: "Error connecting to server. Try again later.", pet: selectedPet, method }, ...history]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="flex h-screen font-sans bg-[#edfafa]">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#2b7a78] text-white flex flex-col p-4">
-        {/* Logo & New Chat */}
-        <div className="flex flex-col items-center mb-4 border-b border-white/10 pb-4">
-          <img src={pawliImage} alt="Logo" className="w-20 h-20 mb-2" />
-          <button className="w-full bg-[#3aafa9] text-white font-semibold py-2 px-4 rounded mb-3 hover:bg-[#319e99] transition">
-            + New Chat
+    <div className="p-6 min-h-screen bg-[#3AAFA9]">
+      <h1 className="text-3xl font-bold text-center mb-6 text-bg-[#17252A]">🐾 Pawli's Pet Predictor</h1>
+      <div className="bg-white rounded-lg shadow-md p-6 space-y-4">
+        <PetSelector
+          selectedPet={selectedPet}
+          setSelectedPet={setSelectedPet}
+          method={method}
+          setMethod={setMethod}
+        />
+        <PredictionForm
+          method={method}
+          inputData={inputData}
+          setInputData={setInputData}
+        />
+        {selectedPet && method && inputData && (
+          <button
+            onClick={handlePredict}
+            className="w-full mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+          >
+            Predict
           </button>
-          <p className="text-white font-semibold text-sm">Chat History</p>
-        </div>
+        )}
+        {loading && <LoadingIndicator />}
+      </div>
 
-        {/* Chat History List */}
-        <div className="flex-1 overflow-y-auto pr-1">
-          <ul className="space-y-2">
-            {chatHistoryItems.map((item, index) => (
-              <li key={index}>
-                <button
-                  className="w-full bg-[#2b7a78] border border-[#2b7a78] text-white text-sm text-left px-3 py-2 rounded-lg hover:bg-[#3aafa9] transition"
-                  onClick={() => alert(`Opening: ${item}`)}
-                >
-                  {item}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </aside>
-
-      {/* Chat Window */}
-      <main className="flex-1 flex flex-col border-l border-gray-300 bg-white">
-        {/* Header */}
-        <div className="flex items-center justify-end bg-[#def2f1] px-4 py-3">
-          <FaShareAlt className="text-[#3aafa9] text-xl cursor-pointer" />
-        </div>
-
-        {/* Chat Body */}
-        <section className="flex-1 overflow-y-auto bg-[#def2f1] px-6 py-4">
-          <div className="flex justify-center">
-            <img
-              src={catImage}
-              alt="Pet"
-              className="w-24 h-24 rounded-full mt-6 mb-2"
-            />
-          </div>
-          <h2 className="text-center text-3xl font-semibold text-[#2b7a78] mb-8">
-            Every Pet Deserves the Full Circle of Care
-          </h2>
-
-          {/* Media Upload Icons */}
-          <div className="flex justify-center items-center h-40">
-            <div className="flex gap-20">
-              <div className="w-24 h-24 bg-[#a7ded6] text-[#3aafa9] rounded-lg flex items-center justify-center text-3xl cursor-pointer hover:bg-[#3aafa9] hover:text-[#a7ded6] transition">
-                <FaCamera />
-              </div>
-              <div className="w-24 h-24 bg-[#a7ded6] text-[#3aafa9] rounded-lg flex items-center justify-center text-3xl cursor-pointer hover:bg-[#3aafa9] hover:text-[#a7ded6] transition">
-                <FaVideo />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Chat Input */}
-        <div className="flex items-center bg-[#def2f1] px-4 py-3 border-t border-[#def2f1] gap-3">
-          <input
-            type="text"
-            placeholder="Talk With Pawli..."
-            className="flex-1 px-4 py-2 border border-[#ccc] rounded-full text-sm focus:outline-none"
-          />
-          <button className="px-4 py-2 bg-[#2b7a78] text-white rounded-full hover:bg-[#246f6d] transition">
-            Send
-          </button>
-        </div>
-      </main>
+      <ChatHistory history={history} />
     </div>
   );
 }
