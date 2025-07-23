@@ -10,6 +10,7 @@ const ChatApp = () => {
   ]);
   const [input, setInput] = useState("");
   const [showPetOptions, setShowPetOptions] = useState(true);
+  const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const navigate = useNavigate();
 
@@ -17,21 +18,50 @@ const ChatApp = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
 
     const userMessage = { sender: "user", text: input.trim() };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setLoading(true);
 
-    // Simulated AI response
-    setTimeout(() => {
-      const aiMessage = {
-        sender: "ai",
-        text: "Thank you for your message! I'll get back to you shortly 🐶",
-      };
-      setMessages((prev) => [...prev, aiMessage]);
-    }, 600);
+    try {
+      const res = await fetch("http://localhost:5000/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: input }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.response) {
+        setMessages((prev) => [
+          ...prev,
+          { sender: "ai", text: data.response },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            sender: "ai",
+            text:
+              data.error ||
+              "Oops! Something went wrong while talking to Pawli 🐾",
+          },
+        ]);
+      }
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          sender: "ai",
+          text: "⚠️ Network error. Please try again later.",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -40,6 +70,7 @@ const ChatApp = () => {
 
   const handleSuggestionClick = (text) => {
     setInput(text);
+    handleSend(); // Optional: auto-send the suggestion
   };
 
   return (
@@ -125,6 +156,11 @@ const ChatApp = () => {
             {msg.text}
           </div>
         ))}
+        {loading && (
+          <div className="bg-gray-200 text-gray-800 rounded-xl px-4 py-2 w-fit">
+            Pawli is typing...
+          </div>
+        )}
         <div ref={messagesEndRef} />
       </div>
 
@@ -140,9 +176,10 @@ const ChatApp = () => {
         />
         <button
           onClick={handleSend}
+          disabled={loading}
           className="bg-blue-500 hover:bg-blue-600 text-white px-4 rounded-full text-sm"
         >
-          Send
+          {loading ? "..." : "Send"}
         </button>
       </div>
     </div>

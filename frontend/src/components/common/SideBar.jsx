@@ -14,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { apiRequest } from "../../api/api";
+import logo from "../../assets/logo_side.png"
 
 export const SideBar = () => {
   return (
@@ -115,10 +116,10 @@ const Sidebar = () => {
 // === Define routes directly with path ===
 const mainLinks = [
   { title: "Home", icon: FiHome, path: "/home" },
-  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
   { title: "AI Services", icon: FiCpu, path: "/ai-services" },
-  { title: "Community", icon: FiUsers, path: "/community" },
+  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
   { title: "Vet Services", icon: FiActivity, path: "/vet-services" },
+  { title: "Community", icon: FiUsers, path: "/community" },
 ];
 
 const footerLinks = [
@@ -146,7 +147,7 @@ const Option = ({ Icon, title, selected, setSelected, open, path }) => (
 const TitleSection = ({ open }) => (
   <div className="mb-3">
     <div className="flex items-center gap-2">
-      <Logo />
+      <img src={logo} alt="PetConnect Logo" className="w-8 h-8" />
       {open && (
         <motion.div layout>
           <span className="text-sm font-semibold">PetConnect</span>

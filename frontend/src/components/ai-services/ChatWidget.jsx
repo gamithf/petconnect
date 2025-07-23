@@ -10,6 +10,7 @@ export default function ChatWidget() {
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([
     { from: "bot", text: "Hi! I'm Pawli. Ask me anything about your pets 🐾" }
   ]);
@@ -23,7 +24,6 @@ export default function ChatWidget() {
       const windowWidth = 320;
       const initialX = Math.max(20, iconRight - windowWidth - 20);
       const initialY = window.innerHeight - 600;
-
       setPosition({ x: initialX, y: initialY });
     }
     setShowChat(prev => !prev);
@@ -69,17 +69,18 @@ export default function ChatWidget() {
   }, [isDragging, dragOffset]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || loading) return;
 
     const userMsg = { from: "user", text: input };
     setMessages(prev => [...prev, userMsg]);
     setInput("");
+    setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/chat", {
+      const res = await fetch("http://localhost:5000/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input })
+        body: JSON.stringify({ prompt: input })
       });
 
       const data = await res.json();
@@ -91,6 +92,8 @@ export default function ChatWidget() {
       }
     } catch (err) {
       setMessages(prev => [...prev, { from: "bot", text: "Something went wrong." }]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -168,6 +171,11 @@ export default function ChatWidget() {
                   {msg.text}
                 </li>
               ))}
+              {loading && (
+                <li className="bg-[#def2f1] text-gray-500 px-3 py-2 rounded max-w-[75%]">
+                  Pawli is typing...
+                </li>
+              )}
             </ul>
           </div>
 
@@ -183,9 +191,12 @@ export default function ChatWidget() {
             />
             <button
               onClick={sendMessage}
-              className="bg-[#2b7a78] text-white px-4 py-2 rounded text-sm hover:bg-[#3a8a88] transition"
+              disabled={loading}
+              className={`px-4 py-2 rounded text-sm text-white transition ${
+                loading ? "bg-gray-400 cursor-not-allowed" : "bg-[#2b7a78] hover:bg-[#3a8a88]"
+              }`}
             >
-              Send
+              {loading ? "..." : "Send"}
             </button>
           </div>
         </div>

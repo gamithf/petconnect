@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaHeart, FaComment, FaShare, FaInfoCircle, FaFilter } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+import adoptdog from '../../assets/adopt-lost/adopt_dog_1.jpg';
+import adoptcat from '../../assets/adopt-lost/adopt_cat_1.jpg';
+import lostdog from '../../assets/adopt-lost/lost_dog_1.jpg';
+import lostcat from '../../assets/adopt-lost/lost_cat_1.jpg';
 
 function PetAdoptionLost() {
   const [activeTab, setActiveTab] = useState('Adopt');
@@ -14,28 +19,28 @@ function PetAdoptionLost() {
     {
       id: 1,
       type: 'Adopt',
-      image: 'https://via.placeholder.com/400',
+      image: adoptdog,
       description: 'Adorable puppy looking for a forever home!',
       details: 'Breed: Golden Retriever, Age: 3 months, Location: San Francisco',
     },
     {
       id: 2,
       type: 'Lost/Found',
-      image: 'https://via.placeholder.com/400',
+      image: lostcat,
       description: 'Lost cat near downtown area. Please help!',
       details: 'Breed: Siamese, Last seen: Yesterday evening, Contact: 555-555-5555',
     },
     {
       id: 3,
       type: 'Adopt',
-      image: 'https://via.placeholder.com/400',
+      image: adoptcat,
       description: 'Friendly cat ready for adoption.',
       details: 'Breed: Domestic Shorthair, Age: 1 year, Location: Oakland',
     },
     {
       id: 4,
       type: 'Lost/Found',
-      image: 'https://via.placeholder.com/400',
+      image: lostdog,
       description: 'Found dog wandering near the park.',
       details: 'Breed: Unknown, Found on: Main Street, Contact: Animal Shelter',
     },
@@ -62,141 +67,150 @@ function PetAdoptionLost() {
     const container = postContainerRef.current;
     if (container) {
       container.addEventListener('scroll', handleScroll);
-      return () => {
-        container.removeEventListener('scroll', handleScroll);
-      };
+      return () => container.removeEventListener('scroll', handleScroll);
     }
   }, [filteredPosts.length]);
 
   const applyFilters = () => {
-    console.log('Filters applied');
     setFiltersApplied(true);
     setFiltersVisible(false);
   };
 
   const clearFilters = () => {
-    console.log('Filters cleared');
     setFiltersApplied(false);
     setFiltersVisible(false);
   };
 
   const handleAddPostClick = () => {
-    console.log('Add Post button clicked');
     // navigate('/add-post');
+    console.log('Add Post button clicked');
   };
 
   return (
-    <div className="min-h-screen bg-[#3AAFA9] text-white flex flex-col items-center">
+    <div className="min-h-screen bg-gradient-to-br from-[#3AAFA9] via-[#4ca8a5] to-[#0686b4] text-white flex flex-col items-center px-4">
       {/* Tabs */}
-      <div className="flex justify-center mb-6 pt-6 gap-4">
+      <motion.div
+        className="flex justify-center gap-4 mt-6 mb-4"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         {['Adopt', 'Lost/Found'].map(tab => (
           <button
             key={tab}
-            className={`px-5 py-2 rounded-full font-semibold transition-all duration-300 text-sm shadow ${
+            onClick={() => setActiveTab(tab)}
+            className={`px-5 py-2 rounded-full font-semibold transition-all duration-300 text-sm shadow-lg ${
               activeTab === tab
                 ? 'bg-white text-[#3AAFA9] scale-105'
                 : 'bg-[#2B7A78] hover:bg-[#254E58]'
             }`}
-            onClick={() => setActiveTab(tab)}
           >
             {tab}
           </button>
         ))}
-      </div>
+      </motion.div>
 
-      {/* Filter & Add Post Buttons */}
-      <div className="flex justify-start w-full max-w-sm px-4 mb-4 gap-3">
+      {/* Filter + Add Post */}
+      <motion.div
+        className="flex justify-start w-full max-w-sm mb-4 gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         <button
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition ${
-            filtersApplied ? 'bg-yellow-500 text-black' : 'bg-[#17252A] text-[#feffff]'
-          } hover:opacity-90`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm transition shadow-lg ${
+            filtersApplied ? 'bg-yellow-400 text-black' : 'bg-[#17252A] text-white'
+          } hover:scale-105`}
           onClick={() => setFiltersVisible(!filtersVisible)}
         >
           <FaFilter />
           {filtersApplied ? 'Filtered' : 'Filter'}
         </button>
         <button
-          className="bg-[#17252A] text-[#feffff] px-4 py-2 rounded-full hover:opacity-90 transition text-sm"
+          className="bg-[#17252A] text-white px-4 py-2 rounded-full hover:scale-105 transition shadow-lg text-sm"
           onClick={handleAddPostClick}
         >
           + Add a Post
         </button>
-      </div>
+      </motion.div>
 
-      {/* Filter UI (toggleable) */}
+      {/* Filter UI */}
       {filtersVisible && (
-        <div className="bg-white text-black rounded-lg p-4 mb-4 shadow max-w-sm w-[90%]">
-          <h4 className="font-semibold mb-2">Apply Filter</h4>
-          <div className="flex flex-col gap-2">
-            <label>
-              <input type="checkbox" /> Only Puppies
-            </label>
-            <label>
-              <input type="checkbox" /> Within 5km
-            </label>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white text-black rounded-xl p-4 mb-4 shadow-xl max-w-sm w-[90%]"
+        >
+          <h4 className="font-semibold mb-2">Apply Filters</h4>
+          <div className="flex flex-col gap-2 text-sm">
+            <label><input type="checkbox" /> Only Puppies</label>
+            <label><input type="checkbox" /> Within 5km</label>
           </div>
           <div className="mt-4 flex justify-end gap-2">
             <button
-              className="bg-gray-300 text-sm px-3 py-1 rounded hover:bg-gray-400"
               onClick={clearFilters}
+              className="bg-gray-300 text-sm px-3 py-1 rounded hover:bg-gray-400"
             >
               Clear
             </button>
             <button
-              className="bg-[#3AAFA9] text-white text-sm px-3 py-1 rounded hover:opacity-90"
               onClick={applyFilters}
+              className="bg-[#3AAFA9] text-white text-sm px-3 py-1 rounded hover:opacity-90"
             >
               Apply
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Posts Section */}
       <div className="w-full max-w-sm mx-auto relative">
-        {/* Scrollable posts */}
         <div
           ref={postContainerRef}
-          className="overflow-y-scroll snap-y snap-mandatory h-[calc(100vh-240px)] scrollbar-hide"
+          className="overflow-y-scroll snap-y snap-mandatory h-[calc(100vh-230px)] scrollbar-hide"
         >
-          {filteredPosts.map((post) => (
-            <div
+          {filteredPosts.map((post, index) => (
+            <motion.div
               key={post.id}
-              className="post-item snap-start w-full h-[calc(100vh-240px)] flex items-center justify-center relative"
+              className="post-item snap-start w-full h-[calc(100vh-230px)] flex items-center justify-center relative"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
             >
-              <div className="bg-[#2B7A78] p-4 rounded-xl shadow-lg text-[#feffff] w-[90%] mx-2 h-full">
+              <div className="bg-white/10 backdrop-blur-md p-4 rounded-xl shadow-lg text-white w-[90%] h-full mx-2 border border-white/20">
                 <div className="flex flex-col justify-between h-full">
                   <div>
                     <img
                       src={post.image}
                       alt={post.description}
-                      className="w-full h-64 object-cover rounded-md mb-4"
+                      className="w-full h-64 object-cover rounded-lg mb-4"
                     />
                     <h3 className="text-xl font-bold mb-2">{post.description}</h3>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Floating Action Buttons */}
-        <div className="absolute right-[-60px] top-0 h-[calc(100vh-240px)] flex flex-col justify-center items-center space-y-4 text-xl text-white">
-          <button className="hover:scale-125 transition">
+        <div className="absolute right-[-60px] top-0 h-[calc(100vh-230px)] flex flex-col justify-center items-center space-y-4 text-xl text-white">
+          <motion.button className="hover:scale-125 transition" whileTap={{ scale: 0.9 }}>
             <FaHeart />
-          </button>
-          <button className="hover:scale-125 transition">
+          </motion.button>
+          <motion.button className="hover:scale-125 transition" whileTap={{ scale: 0.9 }}>
             <FaComment />
-          </button>
-          <button className="hover:scale-125 transition">
+          </motion.button>
+          <motion.button className="hover:scale-125 transition" whileTap={{ scale: 0.9 }}>
             <FaShare />
-          </button>
-          <button
-            className="hover:scale-125 transition"
+          </motion.button>
+          <motion.button
             onClick={() => alert(filteredPosts[visiblePostIndex]?.details)}
+            className="hover:scale-125 transition"
+            whileTap={{ scale: 0.9 }}
           >
             <FaInfoCircle />
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>
