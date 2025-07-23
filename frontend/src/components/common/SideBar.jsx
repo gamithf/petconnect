@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import {
   FiHome,
@@ -13,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { apiRequest } from "../../api/api";
+import logo from "../../assets/logo_side.png"
 
 export const SideBar = () => {
   return (
@@ -34,25 +36,25 @@ const Sidebar = () => {
         const response = await apiRequest("/users/profile", "GET");
         const data = response.data;
         console.log(data);
-        if (data.status === 'success') {
+        if (data.status === "success") {
           console.log(data.data);
           setUser(data.data);
         } else {
-          console.error('Failed to fetch user profile:', data.message);
+          console.error("Failed to fetch user profile:", data.message);
         }
       } catch (error) {
-        console.error('Failed to fetch user:', error);
+        console.error("Failed to fetch user:", error);
       }
     };
 
     fetchUser();
   }, []);
- 
+
   useEffect(() => {
     const path = location.pathname;
-    const match = mainLinks.concat(footerLinks).find((link) =>
-      path.includes(link.path)
-    );
+    const match = mainLinks
+      .concat(footerLinks)
+      .find((link) => path.includes(link.path));
     setSelected(match?.title || "Home");
   }, [location.pathname]);
 
@@ -95,12 +97,13 @@ const Sidebar = () => {
         ))}
         {open && (
           <div className="text-sm text-slate-300 px-3 mt-4">
-            {open && user?.name && (  // Only render if user.name exists
-              <div className="text-sm text-slate-300 px-3 mt-4">
-                <div className="font-semibold">{user.name}</div>
-                <div className="text-xs text-slate-400">Pet Lover</div>
-              </div>
-            )}
+            {open &&
+              user?.name && ( // Only render if user.name exists
+                <div className="text-sm text-slate-300 px-3 mt-4">
+                  <div className="font-semibold">{user.name}</div>
+                  <div className="text-xs text-slate-400">Pet Lover</div>
+                </div>
+              )}
           </div>
         )}
       </div>
@@ -112,11 +115,11 @@ const Sidebar = () => {
 
 // === Define routes directly with path ===
 const mainLinks = [
-  { title: "Home", icon: FiHome, path: "/" },
-  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
+  { title: "Home", icon: FiHome, path: "/home" },
   { title: "AI Services", icon: FiCpu, path: "/ai-services" },
-  { title: "Community", icon: FiUsers, path: "/community" },
+  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
   { title: "Vet Services", icon: FiActivity, path: "/vet-services" },
+  { title: "Community", icon: FiUsers, path: "/community" },
 ];
 
 const footerLinks = [
@@ -144,7 +147,7 @@ const Option = ({ Icon, title, selected, setSelected, open, path }) => (
 const TitleSection = ({ open }) => (
   <div className="mb-3">
     <div className="flex items-center gap-2">
-      <Logo />
+      <img src={logo} alt="PetConnect Logo" className="w-8 h-8" />
       {open && (
         <motion.div layout>
           <span className="text-sm font-semibold">PetConnect</span>
