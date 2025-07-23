@@ -14,8 +14,8 @@ export default function PetSelector({ selectedPet, setSelectedPet, method, setMe
           className="w-full px-4 py-3 rounded-lg border border-blue-300 bg-blue-50 text-blue-900 shadow-sm focus:ring-2 focus:ring-blue-400"
         >
           <option value="">-- Choose Pet --</option>
-          <option value="dog">🐶 Dog</option>
-          <option value="cat">🐱 Cat</option>
+          <option value="dog">🐶 Rocky</option>
+          <option value="cat">🐱 Whiskers</option>
         </select>
       </div>
 

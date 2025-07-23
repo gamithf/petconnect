@@ -28,7 +28,7 @@ export default function AI() {
           symptoms4: symptoms[3] || "",
           symptoms5: symptoms[4] || ""
         };
-        response = await fetch("http://localhost:5000/predict-disease-with-symptoms", {
+        response = await fetch("http://localhost:5000/analyze-symptoms", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -42,13 +42,13 @@ export default function AI() {
       if (method === "image") {
         const formData = new FormData();
         formData.append("file", inputData);
-        response = await fetch("http://localhost:5000/predict-disease-with-image", {
+        response = await fetch("http://localhost:5000/analyze-image", {
           method: "POST",
           body: formData
         });
         const result = await response.json();
         resultText = response.ok
-          ? `Pawli thinks your ${selectedPet} may have **${result.prediction}** (Confidence: ${(result.confidence * 100).toFixed(2)}%)`
+          ? `Pawli thinks your ${selectedPet} may have **${result.prediction}**)`
           : result.error || "Prediction failed. Try again.";
       }
 
