@@ -25,7 +25,7 @@ export const SideBar = () => {
 };
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const [selected, setSelected] = useState("");
   const [user, setUser] = useState({});
@@ -117,7 +117,7 @@ const Sidebar = () => {
 const mainLinks = [
   { title: "Home", icon: FiHome, path: "/home" },
   { title: "AI Services", icon: FiCpu, path: "/ai-services" },
-  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
+  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption-lost" },
   { title: "Vet Services", icon: FiActivity, path: "/vet-services" },
   { title: "Community", icon: FiUsers, path: "/community" },
 ];

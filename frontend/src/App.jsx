@@ -17,6 +17,7 @@ import Clinics from "./pages/vet-services/Clinics";
 import ClinicsInfo from "./pages/vet-services/ClinicsInfo";
 import ChatWidget from "./components/ai-services/ChatWidget";
 import PetForm from "./pages/ai-service/PetForm";
+import AddPost from "./components/adoption-lost/AddPost";
 
 // Wrapper component to access location inside protected layout
 function ProtectedLayout() {
@@ -30,13 +31,14 @@ function ProtectedLayout() {
       <div className="flex-1 relative">
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path="/pet-adoption" element={<PetAdoptionLost />} />
+          <Route path="/pet-adoption-lost" element={<PetAdoptionLost />} />
           <Route path="/ai-services" element={<AI />} />
           <Route path="/community" element={<Community />} />
           <Route path="/vet-services" element={<VetService />} />
           <Route path="/clinics" element={<Clinics />} />
           <Route path="/clinics/:clinicId" element={<ClinicsInfo />} />
           <Route path="/pet-form" element={<PetForm />} />
+          <Route path="/add-pet-post" element={<AddPost />} />
         </Routes>
         {shouldShowChat && <ChatWidget />}
       </div>

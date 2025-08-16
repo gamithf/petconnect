@@ -7,26 +7,35 @@ export async function apiRequest(
   options = {}
 ) {
   const fullUrl = `${API_BASE_URL}${url}`;
-  
+
   if (!API_BASE_URL) {
     throw new Error('API_BASE_URL is not defined in environment variables');
   }
 
   const token = localStorage.getItem('token');
-  
+
+  // Base headers
   const headers = {
-    'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` }),
+    ...(token && { Authorization: `Bearer ${token}` }),
     ...options.headers,
   };
+
+  let body;
+  if (payload instanceof FormData) {
+    // Don't set Content-Type, browser will handle boundary
+    body = payload;
+  } else if (payload) {
+    headers['Content-Type'] = 'application/json';
+    body = JSON.stringify(payload);
+  }
 
   try {
     const response = await fetch(fullUrl, {
       ...options,
       method,
       headers,
-      credentials: 'include', // Ensures cookies are sent
-      body: payload ? JSON.stringify(payload) : undefined,
+      credentials: 'include',
+      body,
     });
 
     if (!response.ok) {
@@ -36,7 +45,7 @@ export async function apiRequest(
       } catch {
         errorData = { message: response.statusText };
       }
-      
+
       const error = new Error(
         errorData.message || `API request failed with status ${response.status}`
       );
@@ -45,39 +54,10 @@ export async function apiRequest(
       throw error;
     }
 
-    const data = await response.json().catch(() => ({})); // Handle empty responses
-    
-    return {
-      data,
-      status: response.status,
-      headers: response.headers,
-    };
+    const data = await response.json().catch(() => ({}));
+    return { data, status: response.status, headers: response.headers };
   } catch (error) {
     console.error('API request failed:', error);
     throw error;
   }
 }
-
-export async function authRequest(
-  url,
-  method = 'POST',
-  payload,
-  options = {}
-) {
-  // Auth-specific defaults
-  const authOptions = {
-    ...options,
-    credentials: 'include', // Important for auth requests
-  };
-
-  return apiRequest(url, method, payload, authOptions);
-}
-
-// Helper methods for common HTTP methods
-export const api = {
-  get: (url, options) => apiRequest(url, 'GET', undefined, options),
-  post: (url, payload, options) => apiRequest(url, 'POST', payload, options),
-  put: (url, payload, options) => apiRequest(url, 'PUT', payload, options),
-  patch: (url, payload, options) => apiRequest(url, 'PATCH', payload, options),
-  delete: (url, options) => apiRequest(url, 'DELETE', undefined, options),
-};
