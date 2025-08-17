@@ -14,7 +14,7 @@ import {
 import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { apiRequest } from "../../api/api";
-import logo from "../../assets/logo_side.png"
+import logo from "../../assets/lg.png"
 
 export const SideBar = () => {
   return (
@@ -25,7 +25,7 @@ export const SideBar = () => {
 };
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const [selected, setSelected] = useState("");
   const [user, setUser] = useState({});
@@ -44,10 +44,14 @@ const Sidebar = () => {
         }
       } catch (error) {
         console.error("Failed to fetch user:", error);
+        setUser(null);
       }
     };
 
     fetchUser();
+    if (!user) {
+      location.reload();
+    }
   }, []);
 
   useEffect(() => {
@@ -57,6 +61,22 @@ const Sidebar = () => {
       .find((link) => path.includes(link.path));
     setSelected(match?.title || "Home");
   }, [location.pathname]);
+
+  const logout = async () => {
+    try {
+      // const response = await apiRequest("/users/logout", "POST", {});
+      // const data = response.data;
+      // if (data.status === "success") {
+      //   window.location.href = "/login"; // Redirect to login page
+      // } else {
+      //   console.error("Logout failed:", data.message);
+      // }
+      sessionStorage.removeItem("authToken");
+      window.location.href = "/login"; // Redirect to login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  }
 
   return (
     <motion.nav
@@ -97,13 +117,20 @@ const Sidebar = () => {
         ))}
         {open && (
           <div className="text-sm text-slate-300 px-3 mt-4">
-            {open &&
-              user?.name && ( // Only render if user.name exists
-                <div className="text-sm text-slate-300 px-3 mt-4">
-                  <div className="font-semibold">{user.name}</div>
-                  <div className="text-xs text-slate-400">Pet Lover</div>
-                </div>
-              )}
+            {user?.name && ( // Only render if user.name exists
+              <div className="text-sm text-slate-300 px-3 mt-4">
+                <div className="font-semibold">{user.name}</div>
+                <div className="text-xs text-slate-400">Pet Lover</div>
+
+                {/* Logout button */}
+                <button
+                  onClick={logout}
+                  className="mt-3 w-full px-3 py-2 rounded-lg bg-red-500 text-white text-sm font-medium hover:bg-red-700 text-center transition"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -116,8 +143,8 @@ const Sidebar = () => {
 // === Define routes directly with path ===
 const mainLinks = [
   { title: "Home", icon: FiHome, path: "/home" },
-  { title: "AI Services", icon: FiCpu, path: "/ai-services" },
-  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption" },
+  { title: "AI Vet Analyzer", icon: FiCpu, path: "/ai-services" },
+  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption-lost" },
   { title: "Vet Services", icon: FiActivity, path: "/vet-services" },
   { title: "Community", icon: FiUsers, path: "/community" },
 ];

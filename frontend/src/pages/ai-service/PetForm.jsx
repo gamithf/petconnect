@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import bg0 from "../../assets/ai-services/bg0.png";
 import bg from "../../assets/ai-services/bg.png";
+import { apiRequest } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 function PetForm() {
   const [petType, setPetType] = useState("");
@@ -10,6 +12,7 @@ function PetForm() {
   const [gender, setGender] = useState("");
   const [neutered, setNeutered] = useState("");
   const [weight, setWeight] = useState("");
+  const navigate = useNavigate();
 
   const handleReset = () => {
     setPetType("");
@@ -21,16 +24,22 @@ function PetForm() {
     setWeight("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!petType || !name || !breed || !age || !gender || !neutered || !weight) {
-      alert("Please fill in all fields.");
       return;
     }
 
-    const petData = { petType, name, breed, age, gender, neutered, weight };
+    const payload = { petType, name, breed, age, gender, neutered, weight };
+    const petData = { name: name, type: petType, breed: breed, age: Number(age) };
     console.log("Pet info submitted:", petData);
-    alert("Thank you! Your pet information has been saved.");
+    const response = await apiRequest("/pets", "POST", petData);
+    const data = response.data;
+
+    if (!(data.message)) navigate("/ai-services");
+    else {
+      setError(response.data?.message || "Login failed. Please try again.");
+    }
     handleReset();
   };
 
@@ -75,10 +84,8 @@ function PetForm() {
                   required
                 >
                   <option value="">Select pet type</option>
-                  <option value="Dog">Dog</option>
-                  <option value="Cat">Cat</option>
-                  <option value="Bird">Bird</option>
-                  <option value="Other">Other</option>
+                  <option value="dog">Dog</option>
+                  <option value="cat">Cat</option>
                 </select>
               </div>
 
@@ -200,7 +207,7 @@ function PetForm() {
                 type="submit"
                 className="bg-[#2b7a78] hover:bg-[#1a5a58] text-white px-6 py-2 rounded-md transition-colors"
               >
-                Continue
+                Submit
               </button>
             </div>
           </form>

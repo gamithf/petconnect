@@ -4,8 +4,9 @@ import { FcGoogle } from "react-icons/fc";
 import loginbg from "../../assets/loginBg.jpg";
 import { Link, useNavigate } from "react-router-dom";
 
-import { authRequest } from "../../api/api";
+import { apiRequest } from "../../api/api";
 import React, { useState } from "react";
+const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_BASE_URL;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,10 +22,14 @@ const Login = () => {
 
     try {
       const payload = { email, password };
-      const response = await authRequest("/users/login", "POST", payload);
+      const response = await apiRequest("/users/login", "POST", payload);
       const data = response.data;
+      console.log("Login response:", data);
 
-      if (data.status === "success") navigate("/home");
+      if (data.status === "success") {
+        sessionStorage.setItem("authToken", data.data.token);
+        navigate("/home");
+      }
       else {
         setError(response.data?.message || "Login failed. Please try again.");
       }
@@ -40,13 +45,13 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     const popup = window.open(
-      "http://localhost:3000/auth/google",
+      `${VITE_NODE_BASE_URL}/auth/google`,
       "_blank",
       "width=500,height=600"
     );
 
     window.addEventListener("message", (event) => {
-      if (event.origin === "http://localhost:3000") {
+      if (event.origin === VITE_NODE_BASE_URL) {
         const { data } = event.data;
         // Handle user data and token
         console.log("Google auth success:", data);
@@ -81,7 +86,7 @@ const Login = () => {
           {/* Logo Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mt-24">
-              Welcome Back Pet Lover !
+              Welcome Back Pet Lover
             </h1>
           </div>
 
@@ -132,7 +137,7 @@ const Login = () => {
                 />
                 <label
                   htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-800"
+                  className="ml-2 block text-sm text-gray-800 font-bold"
                 >
                   Remember me
                 </label>
@@ -141,7 +146,7 @@ const Login = () => {
               <div className="text-sm">
                 <a
                   href="#"
-                  className="font-medium text-gray-800 hover:text-[#2E8B84]"
+                  className="font-bold text-gray-800 hover:text-[#2E8B84]"
                 >
                   Forgot password?
                 </a>
@@ -178,13 +183,13 @@ const Login = () => {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600">
+          <div className="mt-6 text-center text-sm text-gray-600 font-bold">
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="font-medium text-[#3AAFA9] hover:text-[#2E8B84]"
+              className="inline-block px-4 py-2 bg-[#3AAFA9] text-white font-medium rounded-lg shadow hover:bg-[#2E8B84] transition-colors"
             >
-              Sign up
+              Register
             </Link>
           </div>
         </div>

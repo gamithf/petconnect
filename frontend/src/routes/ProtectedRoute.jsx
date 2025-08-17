@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { apiRequest } from "../api/api";
+const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_BASE_URL;
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -7,10 +9,14 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const response = await fetch('/auth/verify', {
-          credentials: 'include'
-        });
-        setIsAuthenticated(response.ok);
+        // const response = await apiRequest(`${VITE_NODE_BASE_URL}/auth/verify`, 'GET');
+        // let authenticated = response.data.status === 'success';
+        const authToken = sessionStorage.getItem("authToken");
+        if (!authToken) {
+          setIsAuthenticated(false);
+          return;
+        }
+        setIsAuthenticated(true);
       } catch (error) {
         setIsAuthenticated(false);
       }

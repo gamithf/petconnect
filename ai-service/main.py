@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import pickle
 import pandas as pd
-import openai
 from flask_cors import CORS
 import json
 from PIL import Image
@@ -15,9 +14,13 @@ import cv2
 import os
 import tempfile
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # Load models
 try:
@@ -48,21 +51,34 @@ except Exception as e:
     print(f"Failed to load model: {str(e)}")
     MODEL = None
 
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
-
-def query_ollama(prompt, model="qwen2.5-coder:3b", stream=False):
-    """Helper function to call Ollama's API."""
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "stream": stream,
-    }
+def query_ai(prompt):
     try:
-        response = requests.post(OLLAMA_API_URL, json=payload)
+        API_KEY = os.getenv('API_KEY')
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json"
+            },
+            data=json.dumps({
+                "model": "deepseek/deepseek-r1:free",
+                "messages": [
+                {
+                    "role": "user",
+                    "content": f"You are a chat assistant in a web application that is built for users with pets, your name is Pawli. Make your responses short and clear. This is the question user asked: {prompt}"
+                }
+                ],
+                
+            })
+        )
         response.raise_for_status()  # Raise error for bad status codes
         return response.json()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
+
+@app.route("/", methods=["GET"])
+def base_api():
+    return jsonify({"message": "Welcome to the PetConnect AI API!"})
 
 @app.route("/ask", methods=["POST"])
 def ask_ollama():
@@ -73,13 +89,12 @@ def ask_ollama():
     if not prompt:
         return jsonify({"error": "Prompt is required"}), 400
     
-    # Call Ollama
-    ollama_response = query_ollama(prompt)
-    
-    if "error" in ollama_response:
-        return jsonify({"error": ollama_response["error"]}), 500
-    
-    return jsonify({"response": ollama_response.get("response")})
+    response = query_ai(prompt)
+    print("API response:", response)
+    message_content = response.get("message", {}).get("content", None)
+    if message_content is None:
+        message_content = "Pawli is busy. Try again later."
+    return jsonify({"response": message_content})
 
 
 @app.route('/analyze-symptoms', methods=['POST'])
@@ -209,19 +224,24 @@ def predict_from_video(video_path, frame_interval=30):
 # Route to upload and predict
 @app.route("/analyze-video", methods=["POST"])
 def analyze_video():
-    if "video" not in request.files:
+    if "file" not in request.files:
         return jsonify({"error": "No video file provided"}), 400
 
-    file = request.files["video"]
+    file = request.files["file"]
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp:
-        file.save(tmp.name)
-        prediction = predict_from_video(tmp.name)
-        os.unlink(tmp.name)  # Clean up
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+    tmp_path = tmp.name
+    tmp.close()
+    file.save(tmp_path)
 
-    return jsonify({"prediction": prediction})
+    try:
+        prediction = predict_from_video(tmp_path)
+        return jsonify({"prediction": prediction})
+    finally:
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 if __name__ == '__main__':

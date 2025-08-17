@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import heroAnimation from "../../assets/lottie/pet-hero.json";
 import { FaPaw, FaRobot, FaCalendarAlt, FaSearch, FaArrowRight } from "react-icons/fa";
+import { useChat } from "../../context/ChatContext";
+import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
+  const { openChat } = useChat();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+      location.reload();
+    }
+  }, []);
+
   return (
     <div className="relative overflow-hidden min-h-screen bg-gradient-to-br from-[#3AAFA9] via-[#4ca8a5] to-[#0686b4]">
       {/* Background SVG Paws */}
@@ -35,9 +47,13 @@ export default function Home() {
             The ultimate hub for pet lovers. Adopt, care, connect, and support
             — all in one place. Let’s make your furry friend’s world better!
           </p>
-          <div className="mt-8">
-           <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer inline-flex items-center gap-2">
-            Explore Features
+          <div className="mt-8 flex gap-4 md:flex-row items-center justify-center">
+           <button onClick={openChat} className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer inline-flex items-center gap-2">
+            Chat with AI Assistant Pawli
+            <FaArrowRight className="text-[#DEF2F1] text-sm" />
+          </button>
+           <button onClick={() => navigate('/ai-services')} className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer inline-flex items-center gap-2">
+            Explore Vet Assistant
             <FaArrowRight className="text-[#DEF2F1] text-sm" />
           </button>
 

@@ -32,17 +32,17 @@ export const loginUser = async (req, res) => {
   if (user && await bcrypt.compare(password, user.password)) {
     // Remove password from user object before sending response
     user.password = undefined; // Ensure password is not sent in response
-
-     res.cookie('auth_token', generateToken(user), {
+    const token = generateToken(user);
+    res.cookie('auth_token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
-      sameSite: 'Strict', 
+      secure: false, // Use secure cookies in production
+      sameSite: 'Lax', 
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
     res.json({ 
       msg: 'User logged in successfully',
-      data: { token: generateToken(user), user },
+      data: { token: token, user },
       status: 'success'
     });
   } else {
@@ -62,4 +62,26 @@ export const getProfile = async (req, res) => {
     data: user,
     status: 'success'
   });
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("auth_token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Strict",
+    });
+
+    res.json({
+      msg: "User logged out successfully",
+      data: null,
+      status: "success",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "Logout failed",
+      data: null,
+      status: "error",
+    });
+  }
 };

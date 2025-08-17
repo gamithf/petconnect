@@ -10,6 +10,8 @@ import './auth/googleAuth.mjs';
 // routes
 import userRouters from './routes/userRoutes.mjs';
 import authRoutes from './routes/authRoutes.mjs';
+import adoptionLostRoutes from './routes/adoptionLostRoutes.mjs';
+import petRoutes from './routes/petRoutes.mjs';
 
 dotenv.config();
 connectDB();
@@ -21,9 +23,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: true,
+  origin: 'http://localhost:5173',
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -47,10 +49,10 @@ app.get('/api', (req, res) => {
 
 app.use('/api/users', userRouters);
 app.use('/auth', authRoutes);
-
-
+app.use('/api/adoption-lost', adoptionLostRoutes);
+app.use('/api/pets', petRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}/api/`);
 });
 
