@@ -26,7 +26,10 @@ const Login = () => {
       const data = response.data;
       console.log("Login response:", data);
 
-      if (data.status === "success") navigate("/home");
+      if (data.status === "success") {
+        sessionStorage.setItem("authToken", data.data.token);
+        navigate("/home");
+      }
       else {
         setError(response.data?.message || "Login failed. Please try again.");
       }

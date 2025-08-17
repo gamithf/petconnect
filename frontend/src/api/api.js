@@ -66,9 +66,13 @@
 import axios from 'axios';
 
 const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_API_URL;
+let authToken = sessionStorage.getItem("authToken");
 
 const api = axios.create({
   baseURL: VITE_NODE_BASE_URL,
+  headers: {
+    Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+  },
   withCredentials: true, // This tells Axios to send cookies with requests
 });
 

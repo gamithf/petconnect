@@ -44,10 +44,14 @@ const Sidebar = () => {
         }
       } catch (error) {
         console.error("Failed to fetch user:", error);
+        setUser(null);
       }
     };
 
     fetchUser();
+    if (!user) {
+      location.reload();
+    }
   }, []);
 
   useEffect(() => {
@@ -60,13 +64,15 @@ const Sidebar = () => {
 
   const logout = async () => {
     try {
-      const response = await apiRequest("/users/logout", "POST", {});
-      const data = response.data;
-      if (data.status === "success") {
-        window.location.href = "/login"; // Redirect to login page
-      } else {
-        console.error("Logout failed:", data.message);
-      }
+      // const response = await apiRequest("/users/logout", "POST", {});
+      // const data = response.data;
+      // if (data.status === "success") {
+      //   window.location.href = "/login"; // Redirect to login page
+      // } else {
+      //   console.error("Logout failed:", data.message);
+      // }
+      sessionStorage.removeItem("authToken");
+      window.location.href = "/login"; // Redirect to login page
     } catch (error) {
       console.error("Logout failed:", error);
     }

@@ -20,7 +20,7 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
 
 # Load models
 try:
@@ -75,6 +75,10 @@ def query_ai(prompt):
         return response.json()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
+
+@app.route("/", methods=["GET"])
+def base_api():
+    return jsonify({"message": "Welcome to the PetConnect AI API!"})
 
 @app.route("/ask", methods=["POST"])
 def ask_ollama():

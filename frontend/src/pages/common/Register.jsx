@@ -37,7 +37,10 @@ export default function Register() {
       const response = await apiRequest("/users/register", "POST", payload);
       const data = response.data;
 
-      if (data.status === "success") navigate("/home");
+      if (data.status === "success") {
+        sessionStorage.setItem("authToken", data.data.token);
+        navigate("/home");
+      }
       else {
         setError(data?.message || "Registration failed. Please try again.");
       }

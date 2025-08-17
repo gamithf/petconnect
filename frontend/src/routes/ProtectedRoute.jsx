@@ -9,9 +9,14 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const response = await apiRequest(`${VITE_NODE_BASE_URL}/auth/verify`, 'GET');
-        let authenticated = response.data.status === 'success';
-        setIsAuthenticated(authenticated);
+        // const response = await apiRequest(`${VITE_NODE_BASE_URL}/auth/verify`, 'GET');
+        // let authenticated = response.data.status === 'success';
+        const authToken = sessionStorage.getItem("authToken");
+        if (!authToken) {
+          setIsAuthenticated(false);
+          return;
+        }
+        setIsAuthenticated(true);
       } catch (error) {
         setIsAuthenticated(false);
       }

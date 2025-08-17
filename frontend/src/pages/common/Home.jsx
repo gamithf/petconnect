@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import Lottie from "lottie-react";
 import heroAnimation from "../../assets/lottie/pet-hero.json";
@@ -9,6 +9,13 @@ import { useNavigate } from 'react-router-dom';
 export default function Home() {
   const { openChat } = useChat();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("authToken");
+    if (!token) {
+      location.reload();
+    }
+  }, []);
 
   return (
     <div className="relative overflow-hidden min-h-screen bg-gradient-to-br from-[#3AAFA9] via-[#4ca8a5] to-[#0686b4]">
