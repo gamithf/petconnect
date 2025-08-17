@@ -10,6 +10,15 @@ Content-Type: application/json
 }
 
 ###
+POST http://165.232.186.202/api/users/login
+Content-Type: application/json
+
+{
+  "email": "gamithf@gmail.com",
+  "password": "gamithf"
+}
+
+###
 POST http://localhost:3000/api/pets
 Content-Type: application/json
 

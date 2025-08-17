@@ -24,6 +24,7 @@ const Login = () => {
       const payload = { email, password };
       const response = await apiRequest("/users/login", "POST", payload);
       const data = response.data;
+      console.log("Login response:", data);
 
       if (data.status === "success") navigate("/home");
       else {
