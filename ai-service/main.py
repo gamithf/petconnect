@@ -20,7 +20,14 @@ import os
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app, supports_credentials=True, resources={
+    r"/*": {
+        "origins": [
+            "http://localhost:5173",
+            "https://petconnect-92xg.vercel.app"
+        ]
+    }
+})
 
 # Load models
 try:

@@ -8,6 +8,7 @@ const FLASK_API_URL = import.meta.env.VITE_FLASK_API_URL;
 
 export default function AI() {
   const [selectedPet, setSelectedPet] = useState('');
+  const [selectedPetType, setSelectedPetType] = useState('');
   const [method, setMethod] = useState('');
   const [inputData, setInputData] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,8 +22,9 @@ export default function AI() {
 
       if (method === "symptoms") {
         const symptoms = inputData.split(",").map(s => s.trim());
+        console.log("selectedPetType:", selectedPetType);
         const payload = {
-          AnimalName: selectedPet,
+          AnimalName: selectedPetType,
           symptoms1: symptoms[0] || "",
           symptoms2: symptoms[1] || "",
           symptoms3: symptoms[2] || "",
@@ -95,6 +97,7 @@ export default function AI() {
             <PetSelector
               selectedPet={selectedPet}
               setSelectedPet={setSelectedPet}
+              setSelectedPetType={setSelectedPetType}
               method={method}
               setMethod={setMethod}
             />
