@@ -18,6 +18,7 @@ import ClinicsInfo from "./pages/vet-services/ClinicsInfo";
 import ChatWidget from "./components/ai-services/ChatWidget";
 import PetForm from "./pages/ai-service/PetForm";
 import AddPost from "./components/adoption-lost/AddPost";
+import { ChatProvider } from "./context/ChatContext";
 
 // Wrapper component to access location inside protected layout
 function ProtectedLayout() {
@@ -49,22 +50,24 @@ function ProtectedLayout() {
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      <ChatProvider>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Protected Routes */}
-        <Route
-          path="/*"
-          element={
-            <ProtectedRoute>
-              <ProtectedLayout />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
+          {/* Protected Routes */}
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <ProtectedLayout />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </ChatProvider>
     </Router>
   );
 }

@@ -1,5 +1,5 @@
 ###
-POST http://127.0.0.1:5000/predict-disease-with-symptoms
+POST http://127.0.0.1:5000/analyze-symptoms
 Content-Type: application/json
 
 {
@@ -9,4 +9,12 @@ Content-Type: application/json
     "symptoms3": "Vomiting",
     "symptoms4": "Weight loss",
     "symptoms5": "Dehydration"
+}
+
+###
+POST http://127.0.0.1:5000/ask
+Content-Type: application/json
+
+{
+    "prompt": "hi"
 }

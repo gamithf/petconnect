@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import pickle
 import pandas as pd
-import openai
 from flask_cors import CORS
 import json
 from PIL import Image
@@ -15,6 +14,10 @@ import cv2
 import os
 import tempfile
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -48,17 +51,26 @@ except Exception as e:
     print(f"Failed to load model: {str(e)}")
     MODEL = None
 
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
-
-def query_ollama(prompt, model="qwen2.5-coder:3b", stream=False):
-    """Helper function to call Ollama's API."""
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "stream": stream,
-    }
+def query_ai(prompt):
     try:
-        response = requests.post(OLLAMA_API_URL, json=payload)
+        API_KEY = os.getenv('API_KEY')
+        response = requests.post(
+            url="https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {API_KEY}",
+                "Content-Type": "application/json"
+            },
+            data=json.dumps({
+                "model": "deepseek/deepseek-r1:free",
+                "messages": [
+                {
+                    "role": "user",
+                    "content": f"You are a chat assistant in a web application that is built for users with pets, your name is Pawli. Make your responses short and clear. This is the question user asked: {prompt}"
+                }
+                ],
+                
+            })
+        )
         response.raise_for_status()  # Raise error for bad status codes
         return response.json()
     except requests.exceptions.RequestException as e:
@@ -73,13 +85,12 @@ def ask_ollama():
     if not prompt:
         return jsonify({"error": "Prompt is required"}), 400
     
-    # Call Ollama
-    ollama_response = query_ollama(prompt)
-    
-    if "error" in ollama_response:
-        return jsonify({"error": ollama_response["error"]}), 500
-    
-    return jsonify({"response": ollama_response.get("response")})
+    response = query_ai(prompt)
+    print("API response:", response)
+    message_content = response.get("message", {}).get("content", None)
+    if message_content is None:
+        message_content = "Pawli is busy. Try again later."
+    return jsonify({"response": message_content})
 
 
 @app.route('/analyze-symptoms', methods=['POST'])
