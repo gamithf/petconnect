@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { apiRequest } from "../../api/api";
 import { useNavigate } from "react-router-dom";
 
-export default function PetSelector({ selectedPet, setSelectedPet, method, setMethod }) {
+export default function PetSelector({ selectedPet, setSelectedPet, setSelectedPetType, method, setMethod }) {
   const [pets, setPets] = useState([]);
   const navigate = useNavigate();
 
@@ -30,6 +30,7 @@ export default function PetSelector({ selectedPet, setSelectedPet, method, setMe
             value={selectedPet}
             onChange={(e) => {
               setSelectedPet(e.target.value);
+              setSelectedPetType(pets.find(pet => pet.name === e.target.value)?.type || '');
               setMethod('');
             }}
             className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
