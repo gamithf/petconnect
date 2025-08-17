@@ -11,6 +11,7 @@ import './auth/googleAuth.mjs';
 import userRouters from './routes/userRoutes.mjs';
 import authRoutes from './routes/authRoutes.mjs';
 import adoptionLostRoutes from './routes/adoptionLostRoutes.mjs';
+import petRoutes from './routes/petRoutes.mjs';
 
 dotenv.config();
 connectDB();
@@ -49,6 +50,7 @@ app.get('/api', (req, res) => {
 app.use('/api/users', userRouters);
 app.use('/auth', authRoutes);
 app.use('/api/adoption-lost', adoptionLostRoutes);
+app.use('/api/pets', petRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}/api/`);

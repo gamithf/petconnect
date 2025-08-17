@@ -4,6 +4,7 @@ import { FcGoogle } from "react-icons/fc";
 import loginbg from "../../assets/loginBg.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../api/api";
+const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_BASE_URL;
 
 export default function Register() {
   const navigate = useNavigate();
@@ -50,13 +51,13 @@ export default function Register() {
 
   const handleGoogleSignIn = async () => {
     const popup = window.open(
-      "http://localhost:3000/auth/google",
+      `${VITE_NODE_BASE_URL}/auth/google`,
       "_blank",
       "width=500,height=600"
     );
 
     window.addEventListener("message", (event) => {
-      if (event.origin === "http://localhost:3000") {
+      if (event.origin === VITE_NODE_BASE_URL) {
         const { data } = event.data;
         if (data && data.token) {
           localStorage.setItem("auth_token", data.token);

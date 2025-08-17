@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { apiRequest } from "../../api/api";
 import React, { useState } from "react";
+const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_BASE_URL;
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,13 +41,13 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     const popup = window.open(
-      "http://localhost:3000/auth/google",
+      `${VITE_NODE_BASE_URL}/auth/google`,
       "_blank",
       "width=500,height=600"
     );
 
     window.addEventListener("message", (event) => {
-      if (event.origin === "http://localhost:3000") {
+      if (event.origin === VITE_NODE_BASE_URL) {
         const { data } = event.data;
         // Handle user data and token
         console.log("Google auth success:", data);

@@ -4,6 +4,7 @@ import PredictionForm from '../../components/ai-services/PredictionForm';
 import LoadingIndicator from '../../components/ai-services/LoadingIndicator';
 import ChatHistory from '../../components/ai-services/ChatHistory';
 import { motion } from 'framer-motion';
+const FLASK_API_URL = import.meta.env.VITE_FLASK_API_URL;
 
 export default function AI() {
   const [selectedPet, setSelectedPet] = useState('');
@@ -28,7 +29,7 @@ export default function AI() {
           symptoms4: symptoms[3] || "",
           symptoms5: symptoms[4] || ""
         };
-        response = await fetch("http://localhost:5000/analyze-symptoms", {
+        response = await fetch(`${FLASK_API_URL}/analyze-symptoms`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -42,13 +43,18 @@ export default function AI() {
       if (method === "image") {
         const formData = new FormData();
         formData.append("file", inputData);
-        response = await fetch("http://localhost:5000/analyze-image", {
+        let endpoint = `${FLASK_API_URL}/analyze-image`;
+        if (inputData.type && inputData.type.startsWith("video/")) {
+          endpoint = `${FLASK_API_URL}/analyze-video`;
+        }
+        const response = await fetch(endpoint, {
           method: "POST",
-          body: formData
+          body: formData,
         });
+
         const result = await response.json();
         resultText = response.ok
-          ? `Pawli thinks your ${selectedPet} may have **${result.prediction}**)`
+          ? `Pawli thinks your ${selectedPet} may have ${result.prediction.toUpperCase()}`
           : result.error || "Prediction failed. Try again.";
       }
 

@@ -6,6 +6,7 @@ import dogImage from '../../assets/ai-services/dog.png';
 import catImage from '../../assets/ai-services/cat.jpeg';
 import { useChat } from '../../context/ChatContext';
 import { motion, AnimatePresence } from 'framer-motion';
+const FLASK_API_URL = import.meta.env.VITE_FLASK_API_URL;
 
 export default function ChatWidget() {
   const { showChat, toggleChat, closeChat } = useChat();
@@ -15,7 +16,7 @@ export default function ChatWidget() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([
-    { from: "bot", text: "Hi! I'm Pawli. Ask me anything about your pets 🐾" }
+    { from: "bot", text: "Hi I'm Pawli. Ask me anything about your pets" }
   ]);
 
   const chatWindowRef = useRef(null);
@@ -65,7 +66,7 @@ export default function ChatWidget() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/ask", {
+      const res = await fetch(`${FLASK_API_URL}/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: input })

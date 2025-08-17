@@ -22,7 +22,7 @@ export default function PredictionForm({ method, inputData, setInputData }) {
               key={index}
               type="text"
               placeholder={`Symptom ${index + 1}`}
-              className="p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
+              className="p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
               value={symptom}
               onChange={(e) => {
                 const updated = [...symptoms];
@@ -39,7 +39,7 @@ export default function PredictionForm({ method, inputData, setInputData }) {
   if (method === 'image') {
     return (
       <div>
-        <label className="block font-semibold text-gray-700 mb-3">📷 Upload Image or Video</label>
+        <label className="block font-semibold text-white mb-3">📷 Upload Image or Video</label>
         <input
           type="file"
           accept="image/*,video/*"

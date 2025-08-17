@@ -220,19 +220,24 @@ def predict_from_video(video_path, frame_interval=30):
 # Route to upload and predict
 @app.route("/analyze-video", methods=["POST"])
 def analyze_video():
-    if "video" not in request.files:
+    if "file" not in request.files:
         return jsonify({"error": "No video file provided"}), 400
 
-    file = request.files["video"]
+    file = request.files["file"]
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as tmp:
-        file.save(tmp.name)
-        prediction = predict_from_video(tmp.name)
-        os.unlink(tmp.name)  # Clean up
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
+    tmp_path = tmp.name
+    tmp.close()
+    file.save(tmp_path)
 
-    return jsonify({"prediction": prediction})
+    try:
+        prediction = predict_from_video(tmp_path)
+        return jsonify({"prediction": prediction})
+    finally:
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 if __name__ == '__main__':

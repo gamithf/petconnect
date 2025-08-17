@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { apiRequest } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 export default function PetSelector({ selectedPet, setSelectedPet, method, setMethod }) {
   const [pets, setPets] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPets = async () => {
       try {
-        const response = await fetch('/api/pets'); // Assuming you have a proxy setup
-        if (response.ok) {
-          const data = await response.json();
-          setPets(data);
-        }
+        const response = await apiRequest("/pets", "GET");
+        let data = response.data;
+        if (data.length === 0 || !data) {
+          navigate("/pet-form")
+        } else setPets(data);
       } catch (error) {
         console.error("Failed to fetch pets:", error);
       }
@@ -18,12 +21,10 @@ export default function PetSelector({ selectedPet, setSelectedPet, method, setMe
     fetchPets();
   }, []);
 
-
-
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-bold text-blue-800 mb-2">🐾 Select Your Pet</label>
+        <label className="block text-md font-bold text-white-800 mb-2">🐾 Select Your Pet</label>
         <div className="flex items-center space-x-2">
           <select
             value={selectedPet}
@@ -31,28 +32,28 @@ export default function PetSelector({ selectedPet, setSelectedPet, method, setMe
               setSelectedPet(e.target.value);
               setMethod('');
             }}
-            className="w-full px-4 py-3 rounded-lg border border-blue-300 bg-blue-50 text-blue-900 shadow-sm focus:ring-2 focus:ring-blue-400"
+            className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
           >
-            <option value="">-- Choose Pet --</option>
+            <option value="" className="text-black">Choose Pet</option>
             {pets.map(pet => (
-              <option key={pet._id} value={pet._id}>{pet.type === 'dog' ? '🐶' : '🐱'} {pet.name}</option>
+              <option key={pet._id} value={pet.name} className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow bg-white text-black">{pet.type === 'dog' ? '🐶' : '🐱'} {pet.name}</option>
             ))}
           </select>
-          <button className="px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">+</button>
+          <button className="px-4 py-3 bg-black text-white rounded-lg hover:bg-blue-600 transition" onClick={() => navigate("/pet-form")}>+</button>
         </div>
       </div>
 
       {selectedPet && (
         <div>
-          <label className="block text-sm font-bold text-blue-800 mb-2">🔍 Prediction Method</label>
+          <label className="block text-md font-bold text-white mb-2">🔍 Prediction Method</label>
           <select
             value={method}
             onChange={(e) => setMethod(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg border border-blue-300 bg-blue-50 text-blue-900 shadow-sm focus:ring-2 focus:ring-blue-400"
+            className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
           >
-            <option value="">-- Choose Method --</option>
-            <option value="symptoms">💊 Enter Symptoms</option>
-            <option value="image">🖼️ Upload Image/Video</option>
+            <option value="" className="text-black">Choose Method</option>
+            <option value="symptoms" className="text-black">💊 Enter Symptoms</option>
+            <option value="image" className="text-black">🖼️ Upload Image/Video</option>
           </select>
         </div>
       )}

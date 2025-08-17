@@ -1,4 +1,4 @@
-import Pet from '../models/Pet.js';
+import Pet from '../models/Pet.mjs';
 
 export const addPet = async (req, res) => {
   try {

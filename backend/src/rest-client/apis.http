@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWZkMGY4YjQ2ZjVjZDgyZjAxYzg2MSIsImVtYWlsIjoiZ2FtaXRoZkBnbWFpbC5jb20iLCJpYXQiOjE3NTUzMTAxMDEsImV4cCI6MTc1NTM5NjUwMX0.KBVq9aLEaN6G0tUhblL7oc7wkyNwbb768t5yzYpu56Y
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OWZkMGY4YjQ2ZjVjZDgyZjAxYzg2MSIsImVtYWlsIjoiZ2FtaXRoZkBnbWFpbC5jb20iLCJpYXQiOjE3NTU0MTU2MzEsImV4cCI6MTc1NTUwMjAzMX0.lVchEK2Wmw9LffZjWi9emNG84OWuGbUfm5L5CPXOduo
 
 ###
 POST http://localhost:3000/api/users/login
@@ -8,3 +8,19 @@ Content-Type: application/json
   "email": "gamithf@gmail.com",
   "password": "gamithf"
 }
+
+###
+POST http://localhost:3000/api/pets
+Content-Type: application/json
+
+{
+  "name": "Maw",
+  "type": "cat",
+  "breed": "persian",
+  "age": 1
+}
+
+###
+GET http://localhost:3000/api/pets
+Content-Type: application/json
+Authorization: Bearer {{token}}

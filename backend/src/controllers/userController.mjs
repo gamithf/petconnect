@@ -63,3 +63,25 @@ export const getProfile = async (req, res) => {
     status: 'success'
   });
 };
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+    });
+
+    res.json({
+      msg: "User logged out successfully",
+      data: null,
+      status: "success",
+    });
+  } catch (error) {
+    res.status(500).json({
+      msg: "Logout failed",
+      data: null,
+      status: "error",
+    });
+  }
+};
