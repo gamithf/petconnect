@@ -18,9 +18,17 @@ export const registerUser = async (req, res) => {
   const user = await User.create({ name, email, password: hashedPassword });
   user.password = undefined;
 
+  const token = generateToken(user);
+  res.cookie('auth_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+    sameSite: 'Lax', 
+    maxAge: 24 * 60 * 60 * 1000 // 1 day
+  });
+
   res.status(201).json({ 
     msg: 'User registered successfully',
-    data: { token: generateToken(user), user },
+    data: { token: token, user },
     status: 'success'
   });
 };
@@ -35,7 +43,7 @@ export const loginUser = async (req, res) => {
     const token = generateToken(user);
     res.cookie('auth_token', token, {
       httpOnly: true,
-      secure: false, // Use secure cookies in production
+      secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
       sameSite: 'Lax', 
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
@@ -68,7 +76,7 @@ export const logoutUser = async (req, res) => {
   try {
     res.clearCookie("auth_token", {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: "Strict",
     });
 
