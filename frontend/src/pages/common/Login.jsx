@@ -24,7 +24,6 @@ const Login = () => {
       const payload = { email, password };
       const response = await apiRequest("/users/login", "POST", payload);
       const data = response.data;
-      console.log("Login response:", data);
 
       if (data.status === "success") {
         sessionStorage.setItem("authToken", data.data.token);
@@ -84,9 +83,9 @@ const Login = () => {
         {/* Content with dark text */}
         <div className="relative z-10 p-8 text-gray-800">
           {/* Logo Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-18">
             <h1 className="text-3xl font-bold mt-24">
-              Welcome Back Pet Lover
+              Welcome back Pet Lover
             </h1>
           </div>
 
@@ -165,25 +164,25 @@ const Login = () => {
             {/* Divider with "or" text */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                {/* <div className="w-full border-t border-gray-300"></div> */}
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">or</span>
+                <span className="px-2 bg-white text-gray-500"></span>
               </div>
             </div>
 
             {/* Google Sign-In Button */}
-            <button
+            {/* <button
               type="button"
               onClick={handleGoogleSignIn}
               className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3AAFA9]"
             >
               <FcGoogle className="h-5 w-5 mr-2" />
               Continue with Google
-            </button>
+            </button> */}
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600 font-bold">
+          <div className="mt-6 text-center text-md text-gray-800 font-bold">
             Don't have an account?{" "}
             <Link
               to="/register"

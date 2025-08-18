@@ -12,7 +12,7 @@ export default function VetService() {
       transition={{ duration: 0.7 }}
       className="bg-[#3AAFA9] min-h-screen px-8 py-6"
     >
-      <NavBar />
+      {/* <NavBar /> */}
       <Services1 />
       {/* HI */}
     </motion.div>
