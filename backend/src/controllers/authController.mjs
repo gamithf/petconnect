@@ -11,7 +11,8 @@ const verifyToken = (token) => {
 
 const verifyAuth = async (req, res) => {
   try {
-    const token = req.cookies.auth_token;
+    const token = req.cookies.auth_token || req.headers.authorization?.split(' ')[1];
+    console.log('Token received:', token);
     
     if (!token) {
       return res.status(401).json({ 

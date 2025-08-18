@@ -10,7 +10,16 @@ Content-Type: application/json
 }
 
 ###
-POST http://165.232.186.202/api/users/login
+POST https://petconnectusj.live/api/users/login
+Content-Type: application/json
+
+{
+  "email": "gamithf@gmail.com",
+  "password": "gamithf"
+}
+
+###
+POST https://petconnectusj.live/auth/verify
 Content-Type: application/json
 
 {
