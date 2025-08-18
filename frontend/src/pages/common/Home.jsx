@@ -10,13 +10,6 @@ export default function Home() {
   const { openChat } = useChat();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("authToken");
-    if (!token) {
-      location.reload();
-    }
-  }, []);
-
   return (
     <div className="relative overflow-hidden min-h-screen bg-gradient-to-br from-[#3AAFA9] via-[#4ca8a5] to-[#0686b4]">
       {/* Background SVG Paws */}
@@ -47,17 +40,24 @@ export default function Home() {
             The ultimate hub for pet lovers. Adopt, care, connect, and support
             — all in one place. Let’s make your furry friend’s world better!
           </p>
-          <div className="mt-8 flex gap-4 md:flex-row items-center justify-center">
-           <button onClick={openChat} className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer inline-flex items-center gap-2">
-            Chat with AI Assistant Pawli
-            <FaArrowRight className="text-[#DEF2F1] text-sm" />
-          </button>
-           <button onClick={() => navigate('/ai-services')} className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 cursor-pointer inline-flex items-center gap-2">
-            Explore Vet Assistant
-            <FaArrowRight className="text-[#DEF2F1] text-sm" />
-          </button>
+          <div className="mt-8 flex flex-col gap-4">
+            <button
+              onClick={openChat}
+              className="w-full max-w-sm bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition-transform duration-300 cursor-pointer inline-flex items-center justify-between"
+            >
+              Chat with AI Assistant Pawli
+              <FaArrowRight className="text-[#DEF2F1] text-lg" />
+            </button>
 
+            <button
+              onClick={() => navigate('/ai-services')}
+              className="w-full max-w-sm bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-2xl shadow-md hover:shadow-lg transition-transform duration-300 cursor-pointer inline-flex items-center justify-between"
+            >
+              Explore Vet Analyzer
+              <FaArrowRight className="text-[#DEF2F1] text-lg" />
+            </button>
           </div>
+
         </motion.div>
 
         {/* Lottie Animation */}

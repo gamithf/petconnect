@@ -86,8 +86,8 @@ export default function Register() {
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-white/30"></div>
 
-        <div className="relative z-10 p-8 text-gray-800">
-          <div className="text-center mb-8">
+        <div className="relative z-10 p-6 text-gray-800">
+          <div className="text-center mb-14">
             <h1 className="text-3xl font-bold mt-24">Join Pet Lovers Today!</h1>
           </div>
 
@@ -157,25 +157,25 @@ export default function Register() {
             {/* Divider */}
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300"></div>
+                {/* <div className="w-full border-t border-gray-300"></div> */}
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500 font-bold">or</span>
+                <span className="px-2 bg-white text-gray-500 font-bold"></span>
               </div>
             </div>
 
             {/* Google Sign-In */}
-            <button
+            {/* <button
               type="button"
               onClick={handleGoogleSignIn}
               className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3AAFA9]"
             >
               <FcGoogle className="h-5 w-5 mr-2" />
               Sign up with Google
-            </button>
+            </button> */}
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600 font-bold">
+          <div className="mt-6 text-center text-md text-gray-800 font-bold">
             Already have an account?{" "}
             <Link
               to="/login"

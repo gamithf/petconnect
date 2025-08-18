@@ -4,6 +4,7 @@ import { FaHeart, FaComment, FaShare, FaMapMarkerAlt, FaUserCircle, FaFilter } f
 import { motion, AnimatePresence } from 'framer-motion';
 import { apiRequest } from "../../api/api";
 import CommentsModal from '../../components/adoption-lost/CommentsModal.jsx';
+const CURRENT_USER_ID = sessionStorage.getItem("userId");
 
 // --- Helper Component for a loading skeleton ---
 const PostSkeleton = () => (
@@ -16,8 +17,6 @@ const PostSkeleton = () => (
     </div>
 );
 
-// This should come from your auth context, but for now, this is the placeholder.
-const CURRENT_USER_ID = "685f50af83ac76a8eef89010";
 
 function PetAdoptionLost() {
   const [activeTab, setActiveTab] = useState('Adopt');
@@ -95,7 +94,7 @@ function PetAdoptionLost() {
   const filteredPosts = posts;
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-gray-900 via-teal-900 to-gray-800 text-white flex flex-col items-center font-sans overflow-hidden">
+    <div className="h-screen w-full bg-gradient-to-br from-[#3AAFA9] via-[#4ca8a5] to-[#0686b4] text-white flex flex-col items-center font-sans overflow-x-hidden">
       
       {/* Top Controls: Tabs, Filter, Add Post */}
       <div className="w-full max-w-md mx-auto px-4 pt-4 z-10">
@@ -106,8 +105,8 @@ function PetAdoptionLost() {
           {['Adopt', 'LostFound'].map(tab => (
             <button
               key={tab} onClick={() => setActiveTab(tab)}
-              className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-400 ${
-                activeTab === tab ? 'bg-teal-500 text-white scale-105' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+              className={`px-6 py-2 rounded-full font-semibold cursor-pointer transition-all duration-300 text-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-400 ${
+                activeTab === tab ? 'bg-teal-700 text-white scale-105' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
               }`}
             >
               {tab === 'LostFound' ? 'Lost & Found' : tab}
@@ -128,7 +127,7 @@ function PetAdoptionLost() {
                 {filtersApplied ? 'Filtered' : 'Filter'}
             </button> */}
             <button
-                className="bg-teal-500 text-white px-4 py-2 rounded-full hover:scale-105 hover:bg-teal-400 transition shadow-lg text-sm font-bold"
+                className="bg-teal-900 text-white cursor-pointer px-6 py-2 rounded-full hover:scale-105 hover:bg-teal-600 transition shadow-lg text-sm font-bold"
                 onClick={handleAddPostClick}
             >
                 + Add Post

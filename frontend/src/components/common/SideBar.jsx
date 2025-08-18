@@ -12,9 +12,9 @@ import {
   FiChevronsRight,
 } from "react-icons/fi";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../api/api";
-import logo from "../../assets/lg.png"
+import logo from "../../assets/lg.png";
 
 export const SideBar = () => {
   return (
@@ -25,19 +25,18 @@ export const SideBar = () => {
 };
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // State remains the same
   const location = useLocation();
   const [selected, setSelected] = useState("");
   const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await apiRequest("/users/profile", "GET");
         const data = response.data;
-        console.log(data);
         if (data.status === "success") {
-          console.log(data.data);
           setUser(data.data);
         } else {
           console.error("Failed to fetch user profile:", data.message);
@@ -49,9 +48,6 @@ const Sidebar = () => {
     };
 
     fetchUser();
-    if (!user) {
-      location.reload();
-    }
   }, []);
 
   useEffect(() => {
@@ -64,23 +60,24 @@ const Sidebar = () => {
 
   const logout = async () => {
     try {
-      // const response = await apiRequest("/users/logout", "POST", {});
-      // const data = response.data;
-      // if (data.status === "success") {
-      //   window.location.href = "/login"; // Redirect to login page
-      // } else {
-      //   console.error("Logout failed:", data.message);
-      // }
       sessionStorage.removeItem("authToken");
-      window.location.href = "/login"; // Redirect to login page
+      const response = await apiRequest("/users/logout", "POST", {});
+      const data = response.data;
+      const token = sessionStorage.getItem("authToken");
+      if (!token || data.status === "success") {
+        navigate("/login");
+      }
     } catch (error) {
       console.error("Logout failed:", error);
     }
-  }
+  };
 
   return (
     <motion.nav
       layout
+      // Add these two event handlers
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
       className="sticky top-0 h-screen shrink-0 p-2 text-[#feffff]"
       style={{
         backgroundColor: "#17252A",
@@ -117,15 +114,14 @@ const Sidebar = () => {
         ))}
         {open && (
           <div className="text-sm text-slate-300 px-3 mt-4">
-            {user?.name && ( // Only render if user.name exists
+            {user?.name && (
               <div className="text-sm text-slate-300 px-3 mt-4">
-                <div className="font-semibold">{user.name}</div>
-                <div className="text-xs text-slate-400">Pet Lover</div>
+                <div className="font-bold">{user.name}</div>
+                <div className="text-xs font-semibold text-slate-400">user</div>
 
-                {/* Logout button */}
                 <button
                   onClick={logout}
-                  className="mt-3 w-full px-3 py-2 rounded-lg bg-red-500 text-white text-sm font-medium hover:bg-red-700 text-center transition"
+                  className="mt-3 w-full px-3 py-2 rounded-lg bg-red-700 text-white text-sm font-medium hover:bg-red-500 text-center transition"
                 >
                   Logout
                 </button>
@@ -134,8 +130,6 @@ const Sidebar = () => {
           </div>
         )}
       </div>
-
-      <ToggleClose open={open} setOpen={setOpen} />
     </motion.nav>
   );
 };
@@ -159,7 +153,7 @@ const Option = ({ Icon, title, selected, setSelected, open, path }) => (
     <motion.button
       layout
       onClick={() => setSelected(title)}
-      className={`flex items-center w-full h-10 rounded-md px-2 transition-colors ${
+      className={`flex items-center w-full h-10 rounded-md px-2 cursor-pointer transition-colors ${
         selected === title ? "bg-slate-700" : "hover:bg-slate-600"
       }`}
     >

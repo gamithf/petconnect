@@ -29,11 +29,11 @@ const verifyAuth = async (req, res) => {
         message: 'Invalid or expired token' 
       });
     }
-
+    const userId = decoded.id;
     res.status(200).json({
         msg: 'User is authenticated',
         status: 'success',
-        data: null
+        data: userId
     });
 
   } catch (error) {

@@ -38,19 +38,20 @@ function Landing() {
 
       {/* Navbar */}
       <nav className="flex justify-end items-center px-6 py-4 relative z-10">
-        <div>
-          <button
-            className="bg-[#17252A] text-[#feffff] px-4 py-2 rounded mr-2 hover:opacity-90 transition cursor-pointer"
-            onClick={() => navigate('/login')}
+        <div flex gap-8>
+         <button
+          className="bg-[#17252A] text-[#feffff] cursor-pointer px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition mr-2 inline-flex items-center gap-2"
+          onClick={() => navigate('/login')}
           >
             Login
+            <FaArrowRight className="text-[#DEF2F1] text-sm" />
           </button>
-          <button
-            className="bg-[#17252A] text-[#feffff] px-4 py-2 rounded hover:opacity-90 transition cursor-pointer"
+          {/* <button
+            className="bg-[#17252A] text-[#feffff] cursor-pointer px-5 py-3 rounded-2xl items-center gap-2 text-sm font-medium hover:opacity-90 transition"
             onClick={() => navigate('/register')}
           >
             Register
-          </button>
+          </button> */}
         </div>
       </nav>
 
@@ -87,7 +88,7 @@ function Landing() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-[#17252A] text-[#feffff] px-6 py-3 rounded-full text-lg font-semibold transition cursor-pointer inline-flex items-center gap-2"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/register')}
           >
             Get Started
             <FaArrowRight className="text-[#DEF2F1] text-sm" />
