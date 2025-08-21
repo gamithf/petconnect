@@ -12,7 +12,11 @@ export const generateToken = (user) => {
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
   const userExists = await User.findOne({ email });
-  if (userExists) return res.status(400).json({ message: 'User already exists' });
+  if (userExists) return res.status(400).json({ 
+    msg: 'User already exists!',
+    data: null,
+    status: 'error' 
+  });
 
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await User.create({ name, email, password: hashedPassword });
@@ -27,7 +31,7 @@ export const registerUser = async (req, res) => {
   });
 
   res.status(201).json({ 
-    msg: 'User registered successfully',
+    msg: 'User registered successfully!',
     data: { token: token, user },
     status: 'success'
   });
@@ -49,13 +53,13 @@ export const loginUser = async (req, res) => {
     });
 
     res.json({ 
-      msg: 'User logged in successfully',
+      msg: 'User logged in successfully!',
       data: { token: token, user },
       status: 'success'
     });
   } else {
     res.status(401).json({ 
-      msg: 'Invalid email or password',
+      msg: 'Invalid email or password!',
       data: null,
       status: 'error'
     });
@@ -64,9 +68,13 @@ export const loginUser = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   const user = await User.findById(req.user.id).select('-password');
-  if (!user) return res.status(404).json({ message: 'User not found' });
+  if (!user) return res.status(404).json({ 
+    msg: 'User not found',
+    data: null,
+    status: 'error'
+  });
   res.json({
-    msg: 'User profile retrieved successfully',
+    msg: 'User profile retrieved successfully!',
     data: user,
     status: 'success'
   });
@@ -81,13 +89,13 @@ export const logoutUser = async (req, res) => {
     });
 
     res.json({
-      msg: "User logged out successfully",
+      msg: "User logged out successfully!",
       data: null,
       status: "success",
     });
   } catch (error) {
     res.status(500).json({
-      msg: "Logout failed",
+      msg: "Logout failed!",
       data: null,
       status: "error",
     });

@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../api/api";
 import logo from "../../assets/lg.png";
+import { useNotification } from "../../context/NotificationContext";
 
 export const SideBar = () => {
   return (
@@ -30,6 +31,7 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const [user, setUser] = useState({});
   const navigate = useNavigate();
+  const { notify } = useNotification();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,11 +41,19 @@ const Sidebar = () => {
         if (data.status === "success") {
           setUser(data.data);
         } else {
-          console.error("Failed to fetch user profile:", data.message);
+          console.error("Failed to fetch user profile:", data.msg);
+          notify(data?.msg || "Failed to fetch user", {
+          type: 'error',
+          title: 'Failed to fetch user'
+        });
         }
       } catch (error) {
         console.error("Failed to fetch user:", error);
         setUser(null);
+        notify(data?.msg || "Failed to fetch user", {
+          type: 'error',
+          title: 'Failed to fetch user'
+        });
       }
     };
 
@@ -66,6 +76,11 @@ const Sidebar = () => {
       const token = sessionStorage.getItem("authToken");
       if (!token || data.status === "success") {
         navigate("/login");
+      } else if (data.status === "error") {
+        notify(data?.msg || "Logout Failed!", {
+          type: 'error',
+          title: 'Logout Failed'
+        });
       }
     } catch (error) {
       console.error("Logout failed:", error);

@@ -6,15 +6,21 @@ dotenv.config();
 export const protect = (req, res, next) => {
   const token = req.cookies.auth_token || req.headers.authorization?.split(" ")[1];
 
-  if (!token) return res.status(401).json({ message: 'Not authorized' });
+  if (!token) return res.status(401).json({ 
+    msg: 'Not authorized' 
+  });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded) return res.status(401).json({ message: 'Not authorized' });
+    if (!decoded) return res.status(401).json({ 
+      msg: 'Not authorized' 
+    });
     
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: 'Invalid token' });
+    res.status(401).json({ 
+      msg: 'Invalid token' 
+    });
   }
 };

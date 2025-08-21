@@ -24,7 +24,7 @@ const ClinicsInfo = () => {
             transition={{ duration: 0.7 }}
             className="min-h-screen px-0 md:px-8 py-0 md:py-6 bg-gradient-to-br from-[#3AAFA9] via-[#2B7A78] to-[#17252A] relative overflow-x-hidden font-sans"
         >
-            <NavBar />
+            {/* <NavBar /> */}
             {/* Clinic Info Card */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
