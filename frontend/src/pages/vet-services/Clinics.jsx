@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { use, useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import NavBar from '../../components/vetService/NavBar'
 import clinic1 from '../../assets/clinic1.png'
@@ -6,6 +6,7 @@ import clinic2 from '../../assets/clinic2.png'
 import clinic3 from '../../assets/clinic3.png'
 import { useNavigate } from 'react-router-dom'
 import AppointmentModal from '../../components/vetService/AppointmentModal'
+import { useNotification } from "../../context/NotificationContext";
 
 export const clinicsData = [
     {
@@ -65,6 +66,14 @@ const Clinics = () => {
     // Filtered and paginated clinics
     const filteredClinics = clinicsData.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
     const clinicsToShow = filteredClinics.slice((page - 1) * clinicsPerPage, page * clinicsPerPage)
+    const { notify } = useNotification();
+
+    useEffect(() => {
+        notify("Kindly note that this feature is under development, what you see is just for demo purposes.", {
+          type: 'info',
+          title: 'Static Page Notice'
+        });
+    }, [])
 
     return (
         <motion.div
@@ -73,7 +82,7 @@ const Clinics = () => {
             transition={{ duration: 0.7 }}
             className="min-h-screen px-8 py-6 bg-gradient-to-br from-[#3AAFA9] via-[#2B7A78] to-[#17252A]"
         >
-            <NavBar />
+            {/* <NavBar /> */}
             <div className="max-w-7xl mx-auto mt-4">
                 <h1 className="text-4xl font-bold tracking-wide text-[#17252A] mb-8 drop-shadow-lg">Vet Clinics Near You</h1>
                 <div className="flex items-center gap-4 mb-10">
@@ -114,7 +123,7 @@ const Clinics = () => {
                                 </div>
                                 <div className="flex gap-3 mt-4">
                                     <button
-                                        className="text-xs flex items-center gap-2 bg-gradient-to-r bg-[#17252A] text-white px-5 py-2 rounded-2xl font-semibold shadow transition-all duration-200"
+                                        className="text-xs flex items-center cursor-pointer gap-2 bg-gradient-to-r bg-[#17252A] hover:bg-[#17333A] text-white px-5 py-2 rounded-2xl font-semibold shadow transition-all duration-200"
                                         onClick={() => {
                                             setSelectedClinic(clinic)
                                             setShowModal(true)
@@ -124,7 +133,7 @@ const Clinics = () => {
                                         Book Now
                                     </button>
                                     <button
-                                        className="text-xs border-1 rounded-2xl text-[#3AAFA9] px-5 py-2 font-semibold  hover:bg-[#3AAFA9] hover:text-white transition-all duration-200"
+                                        className="text-xs border-1 rounded-2xl cursor-pointer text-[#3AAFA9] px-5 py-2 font-semibold  hover:bg-[#3AAFA9] hover:text-white transition-all duration-200"
                                         onClick={() => navigate(`/clinics/${(page - 1) * clinicsPerPage + idx}`)}
                                     >
                                         More Info

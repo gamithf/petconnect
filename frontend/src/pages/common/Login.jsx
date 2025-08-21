@@ -3,9 +3,10 @@ import { FiUser, FiLock, FiArrowRight } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import loginbg from "../../assets/loginBg.jpg";
 import { Link, useNavigate } from "react-router-dom";
-
 import { apiRequest } from "../../api/api";
 import React, { useState } from "react";
+import { useNotification } from "../../context/NotificationContext";
+
 const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_BASE_URL;
 
 const Login = () => {
@@ -14,6 +15,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,17 +28,25 @@ const Login = () => {
       const data = response.data;
 
       if (data.status === "success") {
+        notify(data?.msg || "Login Successful!", {
+          type: 'success',
+          title: 'Login Successful'
+        });
         sessionStorage.setItem("authToken", data.data.token);
         navigate("/home");
       }
       else {
-        setError(response.data?.message || "Login failed. Please try again.");
+        notify(data?.msg || "Login Failed!", {
+          type: 'error',
+          title: 'Login Failed'
+        });
+        // setError(response.data?.msg || "Login failed. Please try again.");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.message || "An error occurred during login."
-      );
-      console.error("Login error:", err);
+      notify(err.response?.data?.message || "Registration Failed!", {
+        type: 'error',
+        title: 'Registration Failed'
+      });
     } finally {
       setIsLoading(false);
     }

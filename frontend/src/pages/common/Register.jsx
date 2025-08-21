@@ -4,6 +4,8 @@ import { FcGoogle } from "react-icons/fc";
 import loginbg from "../../assets/loginBg.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { apiRequest } from "../../api/api";
+import { useNotification } from "../../context/NotificationContext";
+
 const VITE_NODE_BASE_URL = import.meta.env.VITE_NODE_BASE_URL;
 
 export default function Register() {
@@ -15,6 +17,7 @@ export default function Register() {
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { notify } = useNotification();
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -39,14 +42,23 @@ export default function Register() {
 
       if (data.status === "success") {
         sessionStorage.setItem("authToken", data.data.token);
+        notify(data?.msg || "Registration Successful!", {
+          type: 'success',
+          title: 'Registration successful'
+        });
         navigate("/home");
       }
       else {
-        setError(data?.message || "Registration failed. Please try again.");
+        notify(data?.msg || "Registration Failed!", {
+          type: 'error',
+          title: 'Registration Failed'
+        });
       }
     } catch (err) {
-      setError(err.response?.data?.message || "An error occurred during registration.");
-      console.error("Registration error:", err);
+      notify(err.response?.data?.message || "Registration Failed!", {
+        type: 'error',
+        title: 'Registration Failed'
+      });
     } finally {
       setIsLoading(false);
     }
