@@ -25,15 +25,15 @@ export const authApi = axios.create({
 authApi.interceptors.request.use(addAuthToken);
 
 export const apiRequest = async (endpoint, method, payload) => {
+  let response;
   try {
-    const response = await api({
+    response = await api({
       url: endpoint,
       method: method,
       data: payload,
     });
     return { data: response.data, status: response.status, headers: response.headers };
   } catch (error) {
-    // It's better to handle the error where you call apiRequest
-    throw error;
+    return { data: error.response?.data, status: error.response?.status, headers: error.response?.headers };
   }
 };

@@ -3,6 +3,7 @@ import checkupImg from '../../assets/vetService1.png';
 import vaccinationImg from '../../assets/vetService2.png';
 import groomingImg from '../../assets/vetService3.png';
 import { useNavigate } from 'react-router-dom';
+import { useNotification } from "../../context/NotificationContext";
 
 const Services = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Services = () => {
       image: groomingImg,
     },
   ];
+  const { notify } = useNotification();
 
   return (
     <div className="">
@@ -52,7 +54,12 @@ const Services = () => {
             <div className="absolute inset-0 flex justify-center items-center bg-black/70 backdrop-blur-sm text-white px-6 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
               <div className="flex flex-col items-center gap-4">
                 <p className="text-base">{service.description}</p>
-                <button className="bg-white text-[#17252A] font-medium px-4 py-2 rounded-md hover:bg-gray-200 transition">
+                <button className="bg-white text-[#17252A] font-medium cursor-pointer px-4 py-2 rounded-md hover:bg-gray-200 transition"
+                  onClick={() => notify("Kindly note that this feature is under development, what you see is just for demo purposes.", {
+                    type: 'info',
+                    title: 'Service Information'
+                  })}
+                >
                   Learn More
                 </button>
               </div>
@@ -61,7 +68,7 @@ const Services = () => {
         ))}
       </div>
 
-      <button className="mt-14 block mx-auto bg-[#17252A] text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#1c3b40] transition shadow-md hover:shadow-lg"
+      <button className="mt-14 block mx-auto bg-[#17252A] text-white cursor-pointer px-8 py-4 rounded-full text-lg font-semibold hover:bg-[#1c3b40] transition shadow-md hover:shadow-lg"
         onClick={() => navigate('/clinics')}
       >
         Find a Vet

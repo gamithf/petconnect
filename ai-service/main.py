@@ -16,6 +16,9 @@ import tempfile
 import requests
 from dotenv import load_dotenv
 import os
+from azure.ai.inference import ChatCompletionsClient
+from azure.ai.inference.models import SystemMessage, UserMessage
+from azure.core.credentials import AzureKeyCredential
 
 load_dotenv()
 
@@ -60,28 +63,51 @@ except Exception as e:
 
 def query_ai(prompt):
     try:
-        API_KEY = os.getenv('API_KEY')
-        response = requests.post(
-            url="https://openrouter.ai/api/v1/chat/completions",
-            headers={
-                "Authorization": f"Bearer {API_KEY}",
-                "Content-Type": "application/json"
-            },
-            data=json.dumps({
-                "model": "deepseek/deepseek-r1:free",
-                "messages": [
-                {
-                    "role": "user",
-                    "content": f"You are a chat assistant in a web application that is built for users with pets, your name is Pawli. Make your responses short and clear. This is the question user asked: {prompt}"
-                }
-                ],
+        # API_KEY = os.getenv('API_KEY')
+        # response = requests.post(
+        #     url="https://openrouter.ai/api/v1/chat/completions",
+        #     headers={
+        #         "Authorization": f"Bearer {API_KEY}",
+        #         "Content-Type": "application/json"
+        #     },
+        #     data=json.dumps({
+        #         "model": "deepseek/deepseek-r1:free",
+        #         "messages": [
+        #         {
+        #             "role": "user",
+        #             "content": f"You are a chat assistant in a web application that is built for users with pets, your name is Pawli. Make your responses short and clear. This is the question user asked: {prompt}"
+        #         }
+        #         ],
                 
-            })
+        #     })
+        # )
+        # response.raise_for_status()
+        # return response.json()
+        endpoint = "https://models.github.ai/inference"
+        model = "deepseek/DeepSeek-R1-0528"
+        token = os.getenv('GITHUB_TOKEN')
+
+        client = ChatCompletionsClient(
+            endpoint=endpoint,
+            credential=AzureKeyCredential(token),
         )
-        response.raise_for_status()  # Raise error for bad status codes
-        return response.json()
+        response = client.complete(
+            messages=[
+                UserMessage(f"You are a chat assistant in a web application that is built for users with pets, your name is Pawli. Make your responses short and clear. This is the question user asked: {prompt}"),
+            ],
+            max_tokens=2048,
+            model=model
+        )
+        print(response.choices[0].message.content)
+        return response.choices[0].message.content
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
+
+def extract_final_response(api_response):
+    parts = api_response.split('</think>', 1)
+    if len(parts) > 1:
+        return parts[1].strip()  
+    return api_response
 
 @app.route("/", methods=["GET"])
 def base_api():
@@ -97,8 +123,8 @@ def ask_ollama():
         return jsonify({"error": "Prompt is required"}), 400
     
     response = query_ai(prompt)
-    print("API response:", response)
-    message_content = response.get("message", {}).get("content", None)
+    message_content = extract_final_response(response)
+    print("API response:", message_content)
     if message_content is None:
         message_content = "Pawli is busy. Try again later."
     return jsonify({"response": message_content})
