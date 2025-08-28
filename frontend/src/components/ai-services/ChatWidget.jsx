@@ -88,14 +88,27 @@ export default function ChatWidget() {
   return (
     <>
       {/* Floating Icon */}
-      <motion.img
-        src={pawliImage}
-        alt="Chat with Pawli"
-        className="fixed bottom-5 right-5 w-16 h-16 rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform duration-300 z-50"
-        onClick={toggleChat}
-        whileHover={{ rotate: 10 }}
-        whileTap={{ scale: 0.9 }}
-      />
+      <div className="fixed bottom-5 right-5 flex flex-col items-center gap-2 z-50">
+        {/* Tooltip / Friendly Text */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="bg-white px-3 py-1 rounded-full text-gray-700 text-sm shadow-md border"
+        >
+          👋 Click me!
+        </motion.div>
+
+        {/* Icon */}
+        <motion.img
+          src={pawliImage}
+          alt="Chat with Pawli"
+          className="w-16 h-16 rounded-full cursor-pointer shadow-lg hover:scale-110 transition-transform duration-300"
+          onClick={toggleChat}
+          whileHover={{ rotate: 10 }}
+          whileTap={{ scale: 0.9 }}
+        />
+      </div>
 
       <AnimatePresence>
         {showChat && (
