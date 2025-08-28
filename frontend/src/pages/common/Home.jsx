@@ -115,10 +115,10 @@ export default function Home() {
           {/* Only show nav links if there's a selected pet */}
           {selectedPet && (
             <nav className="hidden md:flex items-center gap-3">
-              <button onClick={() => navigate('/vets')} className={navButtonClass}><FaStethoscope /> Find a Vet</button>
-              <button onClick={() => navigate(`/passport/${selectedPet.id}`)} className={navButtonClass}><FaFileAlt /> Passport</button>
-              <button onClick={() => navigate('/analyzer')} className={navButtonClass}><FaRobot /> AI Analyzer</button>
-              <button onClick={() => navigate('/community')} className={navButtonClass}><FaUsers /> Community</button>
+              {/* <button onClick={() => navigate('/vets')} className={navButtonClass}><FaStethoscope /> Find a Vet</button> */}
+              <button onClick={() => navigate(`/passport/${selectedPet.id}`)} className={navButtonClass}><FaFileAlt /> Digital Passport</button>
+              {/* <button onClick={() => navigate('/analyzer')} className={navButtonClass}><FaRobot /> AI Analyzer</button>
+              <button onClick={() => navigate('/community')} className={navButtonClass}><FaUsers /> Community</button> */}
             </nav>
           )}
         </header>
