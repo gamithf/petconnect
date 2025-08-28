@@ -12,6 +12,7 @@ function PetForm() {
   const [gender, setGender] = useState("");
   const [neutered, setNeutered] = useState("");
   const [weight, setWeight] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleReset = () => {
@@ -27,20 +28,36 @@ function PetForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!petType || !name || !breed || !age || !gender || !neutered || !weight) {
+      setError("Please fill out all fields.");
       return;
     }
+    setError(null);
 
-    const payload = { petType, name, breed, age, gender, neutered, weight };
-    const petData = { name: name, type: petType, breed: breed, age: Number(age) };
+    const petData = { 
+      name: name, 
+      type: petType, 
+      breed: breed, 
+      age: Number(age),
+      gender: gender,
+      neutered: neutered, // "Yes" or "No" string
+      weight: weight 
+    };
     console.log("Pet info submitted:", petData);
-    const response = await apiRequest("/pets", "POST", petData);
-    const data = response.data;
+    
+    try {
+      const response = await apiRequest("/pets", "POST", petData);
+      const data = response.data;
 
-    if (!(data.message)) navigate("/ai-services");
-    else {
-      setError(response.data?.message || "Login failed. Please try again.");
+      if (response.data && response.data._id) {
+        // SUCCESS! Navigate to the home page to see the new pet dashboard.
+        navigate("/"); 
+      } else {
+        setError(response.data?.message || "Failed to add pet. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting pet form:", err);
+      setError("An unexpected error occurred. Please try again.");
     }
-    handleReset();
   };
 
   return (
@@ -69,6 +86,9 @@ function PetForm() {
             className="w-full max-w-md space-y-6"
             onSubmit={handleSubmit}
           >
+            
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
             <h2 className="text-2xl font-bold text-center text-[#2b7a78]">
               Give Pawli the basic information about your pet for better care
             </h2>

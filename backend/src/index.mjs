@@ -12,6 +12,10 @@ import userRouters from './routes/userRoutes.mjs';
 import authRoutes from './routes/authRoutes.mjs';
 import adoptionLostRoutes from './routes/adoptionLostRoutes.mjs';
 import petRoutes from './routes/petRoutes.mjs';
+import journalRoutes from './routes/journalRoutes.mjs';
+import timelineRoutes from './routes/timelineRoutes.mjs';
+import wellnessRoutes from './routes/wellnessRoutes.mjs';
+import recommendationsRoutes from './routes/recommendationsRoutes.mjs';
 
 dotenv.config();
 connectDB();
@@ -51,6 +55,10 @@ app.use('/api/users', userRouters);
 app.use('/auth', authRoutes);
 app.use('/api/adoption-lost', adoptionLostRoutes);
 app.use('/api/pets', petRoutes);
+app.use('/api/journal', journalRoutes);
+app.use('/api/timeline', timelineRoutes);
+app.use('/api/wellness', wellnessRoutes);
+app.use('/api/tirecommendationsmeline', recommendationsRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}/api/`);

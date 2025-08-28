@@ -21,6 +21,7 @@ import AddPost from "./components/adoption-lost/AddPost";
 import { ChatProvider } from "./context/ChatContext";
 import Notification from "./pages/common/Notification";
 import Setting from "./pages/common/Setting";
+import PetPassportPage from "./pages/dashboard/PetPassportPage";
 
 // Wrapper component to access location inside protected layout
 function ProtectedLayout() {
@@ -44,6 +45,7 @@ function ProtectedLayout() {
           <Route path="/add-pet-post" element={<AddPost />} />
           <Route path="/notifications" element={<Notification />} />
           <Route path="/settings" element={<Setting />} />
+          <Route path="/passport/:petId" element={<PetPassportPage />} />
         </Routes>
         {shouldShowChat && <ChatWidget />}
       </div>

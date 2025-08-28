@@ -55,7 +55,7 @@ export default function Register() {
         });
       }
     } catch (err) {
-      notify(err.response?.data?.message || "Registration Failed!", {
+      notify(err.response?.data?.msg || "Registration Failed!", {
         type: 'error',
         title: 'Registration Failed'
       });
