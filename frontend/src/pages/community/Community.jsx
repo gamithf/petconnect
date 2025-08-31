@@ -3,12 +3,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Award, Heart, MessageSquare, PawPrint, PlusCircle, Share2, Users, MapPin, CalendarClock, Mic2, Bot, Briefcase } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar';
-import { Separator } from '../../components/ui/separator';
-import { Badge } from '../../components/ui/badge';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../components/ui/Card';
+import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/Avatar';
+import { Separator } from '../../components/ui/Separator';
+import { Badge } from '../../components/ui/Badge';
 import CreatePostDialog from '../../components/community/CreatePostDialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/Tabs';
 import AiVetConsult from '../../components/community/AiVetConsult';
 import { pets as allPets } from '../../lib/data';
 
