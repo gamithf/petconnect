@@ -52,3 +52,34 @@ export const getPetById = async (req, res) => {
     res.status(500).json({ message: 'Server error', error });
   }
 };
+
+// @desc    Update pet details (for passport)
+// @route   PUT /api/pets/:id
+// @access  Private
+export const updatePetDetails = async (req, res) => {
+  try {
+    const pet = await Pet.findById(req.params.id);
+
+    if (!pet) {
+      return res.status(404).json({ message: 'Pet not found' });
+    }
+
+    // CRITICAL: Ensure the user owns this pet
+    if (pet.owner.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'User not authorized' });
+    }
+
+    // Find and update the pet with the request body
+    // req.body might contain { name, breed, age, careSheet, emergencyContacts, ... }
+    const updatedPet = await Pet.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body }, // Use $set to update only the fields provided in the body
+      { new: true, runValidators: true } // Return the new, updated document
+    );
+
+    res.status(200).json(updatedPet);
+  } catch (error) {
+    console.error('Error updating pet:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+};

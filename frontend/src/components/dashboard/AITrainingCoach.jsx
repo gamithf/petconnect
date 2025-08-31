@@ -7,11 +7,32 @@ const getTrainingPlan = async (pet, goalLabel) => {
     await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
     return {
         planTitle: `Training Plan: ${goalLabel}`,
-        introduction: `Here is a tailored plan to help ${pet.name} learn to stop jumping on guests. Consistency and positive reinforcement are key!`,
+        introduction: `Here is a personalized nutrition plan to keep ${pet.name} healthy, energetic, and at an ideal weight. A balanced diet is the cornerstone of their well-being!`,
         steps: [
-            { step: 1, title: 'Establish a "Sit" Command', details: 'Before anyone enters, have ${pet.name} sit. Reward them for staying seated as the door opens.', tip: 'Use high-value treats to keep their focus on you, not the door.' },
-            { step: 2, title: 'Leash Control', details: 'Keep ${pet.name} on a leash when guests arrive. This gives you control to prevent jumping.', tip: 'A gentle tug and a "sit" command can redirect their excitement.' },
-            { step: 3, title: 'Reward Calm Behavior', details: 'Only give ${pet.name} attention or treats from guests when all four paws are on the floor. Ask your guests to ignore them until they are calm.' }
+            {
+                "step": 1,
+                "title": "Choose the Right Food",
+                "details": `The foundation of ${pet.name}'s diet should be a high-quality commercial dog food appropriate for their age and size. Consult your vet for brand recommendations.`,
+                "tip": "Look for a named protein source (like chicken or lamb) as the first ingredient, and avoid fillers like corn and soy."
+            },
+            {
+                "step": 2,
+                "title": "Portion Control is Key",
+                "details": `Measure ${pet.name}'s food for each meal to prevent overfeeding. The recommended serving size on the bag is a good starting point, but adjust based on activity level.`,
+                "tip": "Use a proper measuring cup for accuracy. A coffee mug or scoop can vary in size, leading to inconsistent portions."
+            },
+            {
+                "step": 3,
+                "title": "Establish a Feeding Schedule",
+                "details": `Feed ${pet.name} two measured meals a day, ideally in the morning and evening. A consistent routine helps regulate their metabolism and digestion.`,
+                "tip": "Avoid 'free-feeding' (leaving a full bowl of food out all day) as it often leads to weight gain."
+            },
+            {
+                "step": 4,
+                "title": "Smart Treating & Hydration",
+                "details": `Treats should be less than 10% of ${pet.name}'s daily diet. Also, ensure a bowl of fresh, clean water is accessible at all times.`,
+                "tip": "Healthy treat options include baby carrots, green beans, blueberries, or small pieces of lean cooked meat."
+            }
         ]
     };
 };
@@ -24,6 +45,7 @@ const Card = ({ children, className = "" }) => (
 const Skeleton = ({ className = "" }) => <div className={`bg-white/10 animate-pulse rounded-md ${className}`}></div>;
 
 const trainingGoals = [
+    { value: 'nutrition-diet-plan', label: 'Nutrition diet plan' },
     { value: 'stop-jumping', label: 'Stop jumping on guests' },
     { value: 'leash-pulling', label: 'Reduce leash pulling' },
     { value: 'barking-at-door', label: 'Decrease barking at the door' },
@@ -38,7 +60,6 @@ export default function AITrainingCoach({ pet }) {
 
     const handleGeneratePlan = async () => {
         if (!selectedGoal) {
-            alert("Please choose a training goal first."); // Replace with toast
             return;
         }
         setIsLoading(true);

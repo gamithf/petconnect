@@ -22,6 +22,8 @@ import { ChatProvider } from "./context/ChatContext";
 import Notification from "./pages/common/Notification";
 import Setting from "./pages/common/Setting";
 import PetPassportPage from "./pages/dashboard/PetPassportPage";
+import VetSearchPage from "./pages/vet-services/VetSearch";
+import ClinicDetailPage from "./pages/vet-services/ClinicDetailPage";
 
 // Wrapper component to access location inside protected layout
 function ProtectedLayout() {
@@ -46,6 +48,8 @@ function ProtectedLayout() {
           <Route path="/notifications" element={<Notification />} />
           <Route path="/settings" element={<Setting />} />
           <Route path="/passport/:petId" element={<PetPassportPage />} />
+          <Route path="/vet-search" element={<VetSearchPage />} />
+          <Route path="/vets/:clinicId" element={<ClinicDetailPage />} />
         </Routes>
         {shouldShowChat && <ChatWidget />}
       </div>

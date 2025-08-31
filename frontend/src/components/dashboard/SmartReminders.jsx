@@ -67,7 +67,7 @@ export default function SmartReminders({ pet }) {
                 ) : (
                     <div className="text-center py-4">
                         <p className="mb-4 text-gray-300">Click the button to scan for upcoming events and generate reminders for {pet.name}.</p>
-                        <button onClick={handleGenerateReminders} disabled={isLoading} className="flex w-full items-center justify-center gap-2 bg-yellow-400/20 hover:bg-yellow-400/30 text-yellow-200 font-semibold py-2.5 px-6 cursor-pointer rounded-lg shadow-lg transition-all duration-300">
+                        <button onClick={handleGenerateReminders} disabled={isLoading} className="flex w-full items-center justify-center gap-2 bg-yellow-400/30 hover:bg-yellow-400/20 text-yellow-200 font-semibold py-2.5 px-6 cursor-pointer rounded-lg shadow-lg transition-all duration-300">
                             {isLoading ? <Loader2 className="animate-spin" /> : <Wand2 />}
                             Generate Reminders
                         </button>
@@ -75,7 +75,7 @@ export default function SmartReminders({ pet }) {
                 )}
 
                 {reminders.length > 0 && (
-                    <button onClick={handleGenerateReminders} disabled={isLoading} className="w-full mt-6 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                    <button onClick={handleGenerateReminders} disabled={isLoading} className="w-full mt-6 flex items-center justify-center gap-2 bg-white/20 hover:bg-white/10 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
                         {isLoading ? <Loader2 className="animate-spin" /> : <Wand2 />}
                         Regenerate
                     </button>

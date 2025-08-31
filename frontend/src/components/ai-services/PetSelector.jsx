@@ -24,37 +24,36 @@ export default function PetSelector({ selectedPet, setSelectedPet, setSelectedPe
   return (
     <div className="space-y-6">
       <div>
-        <label className="block text-md font-bold text-white-800 mb-2">🐾 Select Your Pet</label>
-        <div className="flex items-center space-x-2">
-          <select
-            value={selectedPet}
-            onChange={(e) => {
-              setSelectedPet(e.target.value);
-              setSelectedPetType(pets.find(pet => pet.name === e.target.value)?.type || '');
-              setMethod('');
-            }}
-            className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
-          >
-            <option value="" className="text-black">Choose Pet</option>
-            {pets.map(pet => (
-              <option key={pet._id} value={pet.name} className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow bg-white text-black">{pet.type === 'dog' ? '🐶' : '🐱'} {pet.name}</option>
-            ))}
-          </select>
-          <button className="px-4 py-3 bg-black text-white rounded-lg hover:bg-blue-600 transition" onClick={() => navigate("/pet-form")}>+</button>
-        </div>
+        <label className="block text-md font-semibold text-gray-200 mb-2">🐾 Select Your Pet</label>
+        <select
+          value={selectedPet}
+          onChange={(e) => {
+            setSelectedPet(e.target.value);
+            setSelectedPetType(pets.find(pet => pet.name === e.target.value)?.type || '');
+            setMethod('');
+          }}
+          className="w-full p-3 bg-white/10 text-white border border-white/20 rounded-lg shadow-sm focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 outline-none transition-all duration-300"
+        >
+          <option value="" className="bg-teal-800 text-gray-300">Choose a pet...</option>
+          {pets.map(pet => (
+            <option key={pet._id} value={pet.name} className="bg-teal-800 text-white">
+              {pet.type === 'dog' ? '🐶' : '🐱'} {pet.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       {selectedPet && (
         <div>
-          <label className="block text-md font-bold text-white mb-2">🔍 Prediction Method</label>
+          <label className="block text-md font-semibold text-gray-200 mb-2">🔍 Prediction Method</label>
           <select
             value={method}
             onChange={(e) => setMethod(e.target.value)}
-            className="w-full p-3 border border-black rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 transition-shadow"
+            className="w-full p-3 bg-white/10 text-white border border-white/20 rounded-lg shadow-sm focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 outline-none transition-all duration-300"
           >
-            <option value="" className="text-black">Choose Method</option>
-            <option value="symptoms" className="text-black">💊 Enter Symptoms</option>
-            <option value="image" className="text-black">🖼️ Upload Image/Video</option>
+            <option value="" className="bg-teal-800 text-gray-300">Choose a method...</option>
+            <option value="symptoms" className="bg-teal-800 text-white">💊 Enter Symptoms</option>
+            <option value="image" className="bg-teal-800 text-white">🖼️ Upload Image/Video</option>
           </select>
         </div>
       )}

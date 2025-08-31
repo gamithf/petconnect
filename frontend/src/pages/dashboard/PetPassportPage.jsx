@@ -41,9 +41,13 @@ export default function PetPassportPage() {
     fetchPetData();
   }, [petId, navigate]);
 
+  const handlePetUpdate = (updatedPetData) => {
+    setPet(updatedPetData);
+  };
+
   const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert("Link Copied! A shareable link to this passport is on your clipboard.");
+    // navigator.clipboard.writeText(window.location.href);
+    // alert("Link Copied! A shareable link to this passport is on your clipboard.");
   };
 
   if (isLoading) {
@@ -63,22 +67,22 @@ export default function PetPassportPage() {
             <h1 className="text-4xl md:text-5xl font-bold">Pet Passport</h1>
           </div>
           <nav className="flex items-center gap-2">
-            <button onClick={handleShare} className="flex items-center cursor-pointer gap-2 bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 cursor-pointer">
+            <button onClick={handleShare} className="flex items-center cursor-pointer gap-2 bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 cursor-pointer">
               <Share2 size={16} /> Share
             </button>
-            <button onClick={() => navigate('/home')} className="flex items-center gap-2 bg-white/20 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 cursor-pointer">
+            <button onClick={() => navigate('/home')} className="flex items-center cursor-pointer gap-2 bg-gray-900 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 cursor-pointer">
               <Home size={16} /> Dashboard
             </button>
           </nav>
         </header>
 
         <div className="space-y-8">
-          <PetVitals pet={pet} />
+          <PetVitals pet={pet} onPetUpdate={handlePetUpdate} />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <CareSheet pet={pet} />
-            <EmergencyContacts pet={pet} />
+            <CareSheet pet={pet} onPetUpdate={handlePetUpdate} />
+            <EmergencyContacts pet={pet} onPetUpdate={handlePetUpdate} />
           </div>
-          <BehavioralNotes pet={pet} />
+          <BehavioralNotes pet={pet} onPetUpdate={handlePetUpdate} />
           <HealthRecords pet={pet} />
         </div>
       </main>
