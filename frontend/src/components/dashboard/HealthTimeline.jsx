@@ -9,6 +9,8 @@ const eventIcons = {
   default: <Stethoscope className="text-gray-400" />
 };
 
+
+
 // This is a sub-component used by HealthTimeline
 const EventCard = ({ event, isLast }) => {
   const icon = eventIcons[event.type] || eventIcons.default;
@@ -36,9 +38,19 @@ const Card = ({ children, className = "" }) => (
 export default function HealthTimeline({ pet }) {
     // API Comment: The 'healthTimeline' array should be part of the main pet object fetched for the dashboard.
     // API: GET /api/pets/{pet.id} (This endpoint should return the pet's full profile including the timeline)
-    const sortedTimeline = [...pet.healthTimeline].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const MOCK_PET = {
+        id: 1,
+        name: 'Buddy',
+        healthTimeline: [
+            { id: 1, type: 'appointment', title: 'Annual Check-up', date: '2023-11-15', details: 'Vet confirmed Buddy is healthy. All vitals are normal.' },
+            { id: 2, type: 'vaccination', title: 'Rabies Booster Shot', date: '2023-08-20', details: 'Received the 3-year rabies vaccine.' },
+            { id: 3, type: 'medication', title: 'Flea & Tick Treatment', date: '2023-12-01', details: 'Monthly application of Frontline.' },
+        ]
+    };
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newEvent, setNewEvent] = useState({ type: 'appointment', date: '', title: '', details: '' });
+    const [timeline, setTimeline] = useState(MOCK_PET.healthTimeline);
+    const sortedTimeline = [...timeline].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     const handleAddEvent = async (e) => {
         e.preventDefault();
@@ -51,6 +63,11 @@ export default function HealthTimeline({ pet }) {
             console.error("Failed to add timeline event:", error);
         }
     };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewEvent(prev => ({ ...prev, [name]: value }));
+    }
 
     return (
         <>
@@ -85,21 +102,34 @@ export default function HealthTimeline({ pet }) {
             
             {/* --- Add Event Modal --- */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-                    <div className="bg-[#2b7a78] p-8 rounded-2xl w-full max-w-md border border-white/20">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-[#17252a] p-8 rounded-2xl w-full max-w-md border border-white/20 shadow-2xl">
                         <div className="flex justify-between items-center mb-6">
                             <h3 className="text-2xl font-bold text-white">Add New Health Event</h3>
-                            <button onClick={() => setIsModalOpen(false)}><X className="text-white cursor-pointer"/></button>
+                            <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-white transition-colors"><X/></button>
                         </div>
                         <form onSubmit={handleAddEvent} className="space-y-4">
-                            {/* Form fields for type, title, date, details */}
-                            {/* Example field: */}
-                            <div>
-                                <label className="block text-sm font-semibold mb-1 text-gray-200">Title</label>
-                                <input type="text" value={newEvent.title} onChange={e => setNewEvent({...newEvent, title: e.target.value})} required className="w-full p-2 bg-gray-700 rounded-md"/>
+                             <div>
+                                <label htmlFor="type" className="block text-sm font-semibold mb-1 text-gray-200">Event Type</label>
+                                <select name="type" id="type" value={newEvent.type} onChange={handleInputChange} className="w-full p-2.5 bg-gray-700 rounded-md text-white border border-gray-600 focus:ring-2 focus:ring-cyan-400 outline-none">
+                                    <option value="appointment">Appointment</option>
+                                    <option value="vaccination">Vaccination</option>
+                                    <option value="medication">Medication</option>
+                                </select>
                             </div>
-                            {/* Add other fields similarly... */}
-                            <button type="submit" className="w-full bg-gray-900 py-3 rounded-lg font-semibold cursor-pointer">Save Event</button>
+                            <div>
+                                <label htmlFor="title" className="block text-sm font-semibold mb-1 text-gray-200">Title</label>
+                                <input id="title" name="title" type="text" value={newEvent.title} onChange={handleInputChange} required className="w-full p-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:ring-2 focus:ring-cyan-400 outline-none"/>
+                            </div>
+                            <div>
+                                <label htmlFor="date" className="block text-sm font-semibold mb-1 text-gray-200">Date</label>
+                                <input id="date" name="date" type="date" value={newEvent.date} onChange={handleInputChange} required className="w-full p-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:ring-2 focus:ring-cyan-400 outline-none"/>
+                            </div>
+                             <div>
+                                <label htmlFor="details" className="block text-sm font-semibold mb-1 text-gray-200">Details</label>
+                                <textarea id="details" name="details" value={newEvent.details} onChange={handleInputChange} rows="3" className="w-full p-2 bg-gray-700 rounded-md text-white border border-gray-600 focus:ring-2 focus:ring-cyan-400 outline-none"></textarea>
+                            </div>
+                            <button type="submit" className="w-full bg-cyan-500 hover:bg-cyan-600 text-white py-3 rounded-lg font-semibold cursor-pointer transition-all duration-300">Save Event</button>
                         </form>
                     </div>
                 </div>

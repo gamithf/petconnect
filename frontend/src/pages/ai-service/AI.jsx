@@ -79,7 +79,7 @@ export default function AI() {
           className="text-center mb-10"
         >
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-3">
-            🐾 Pawli's Pet Predictor
+            🐾AI Vet Analyzer
           </h1>
           <p className="text-md md:text-lg text-gray-600 max-w-2xl mx-auto">
             Get instant AI-powered health insights for your beloved pet. Simply choose a method below to begin.

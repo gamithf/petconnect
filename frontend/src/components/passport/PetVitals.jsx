@@ -32,8 +32,8 @@ export default function PetVitals({ pet }) {
                 </div>
                 <div className="flex-1 grid grid-cols-3 gap-4 w-full ...">
                     <VitalStat label="Age" value={`${pet.age || 'N/A'} years`} />
-                    <VitalStat label="Weight" value={pet.weight || 'N/A'} />
-                    <VitalStat label="Gender" value={pet.gender || 'N/A'} />
+                    <VitalStat label="Weight" value={pet.weight || '80kg'} />
+                    <VitalStat label="Gender" value={pet.gender || 'MALE'} />
                 </div>
             </div>
         </div>

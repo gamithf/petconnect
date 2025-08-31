@@ -1,7 +1,7 @@
 import React from 'react';
 import { HeartCrack, HeartHandshake, ToyBrick } from 'lucide-react';
 
-export default function BehavioralNotes({ pet }) {
+export default function BehavioralNotes({ pet, onPetUpdate }) {
     const notes = pet.behavioralNotes;
     return (
         <div className="bg-black/20 ...">

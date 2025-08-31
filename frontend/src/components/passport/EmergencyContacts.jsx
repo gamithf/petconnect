@@ -1,7 +1,7 @@
 import React from 'react';
 import { Phone, Hospital, Stethoscope } from 'lucide-react';
 
-export default function EmergencyContacts({ pet }) {
+export default function EmergencyContacts({ pet, onPetUpdate }) {
     const contacts = pet.emergencyContacts;
     return (
         <div className="bg-black/20 border border-red-500/50 ... h-full">

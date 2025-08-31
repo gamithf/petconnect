@@ -142,12 +142,12 @@ export default function Home() {
                   <DailyJournal pet={selectedPet} onJournalUpdate={handlePetUpdate} />
                   <JournalInsights pet={selectedPet} />
                 </div>
-                <HealthTimeline pet={selectedPet} onTimelineUpdate={handlePetUpdate} />
-                <ProactiveHealthDashboard pet={selectedPet} />
+                {/* <ProactiveHealthDashboard pet={selectedPet} /> */}
                 <AITrainingCoach pet={selectedPet} />
               </div>
-              <div className="lg:col-span-2">
+              <div className="lg:col-span-2 space-y-38">
                 <SmartReminders pet={selectedPet} />
+                <HealthTimeline pet={selectedPet} onTimelineUpdate={handlePetUpdate} />
               </div>
             </div>
           </section>

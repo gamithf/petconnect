@@ -153,9 +153,9 @@ const Sidebar = () => {
 const mainLinks = [
   { title: "Home", icon: FiHome, path: "/home" },
   { title: "AI Vet Analyzer", icon: FiCpu, path: "/ai-services" },
-  { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption-lost" },
-  { title: "Vet Services", icon: FiActivity, path: "/vet-services" },
+  // { title: "Pet Adoption/Lost", icon: FiHeart, path: "/pet-adoption-lost" },
   { title: "Community", icon: FiUsers, path: "/community" },
+  { title: "Vet Services", icon: FiActivity, path: "/vet-services" },
 ];
 
 const footerLinks = [
